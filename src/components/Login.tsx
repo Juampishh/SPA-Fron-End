@@ -6,7 +6,7 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Aquí iría la lógica para manejar el login
+   
     console.log("Email:", email);
     console.log("Password:", password);
     localStorage.setItem("user", JSON.stringify({ email, password }));
