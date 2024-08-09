@@ -1,6 +1,8 @@
 
-import { NavbarComponent } from "./components/Navbar";
-import { CardComponent } from "./components/Carousel";
+import { NavbarComponent } from "./components/Navbar/Navbar";
+import { CardComponent } from "./components/Layout/Card";
+import Footer from "./components/Footer/Footer";
+
 
 function Container() {
   return (
@@ -11,6 +13,9 @@ function Container() {
         <CardComponent />
         <CardComponent />
       </div>
+     <Footer/>
+      
+    
     </div>
   );
 }

@@ -1,29 +1,45 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Login from "./components/Login";
+import Login from "./components/Autenticacion/Login";
 import "./index.css";
 import Container from "./container";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
-import { useLogin } from "./Hooks/Login";
+import { UsuarioProvider,  useUsuario } from "./Context/usuarioContex";
+import { Toaster } from "react-hot-toast";
+import { Register } from "./components/Autenticacion/Register";
+export default () => <UsuarioProvider>
+  <App></App>
+</UsuarioProvider>
 
 function App() {
-  const {user} = useLogin();
-  
-
-
+  const {usuario} = useUsuario();
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route element={<ProtectedRoutes canAccess={true} redirectPath ="login" />}>
+          <Route element={<ProtectedRoutes canAccess={!!usuario && Object.keys(usuario).length > 0} redirectPath ="/" />}>
             <Route path="/home" element={<Container />} />
           </Route>
 
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
+          <Route path='/register' element={<Register/>}/>
         </Routes>
       </BrowserRouter>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        gutter={8}
+        containerStyle={{}}
+        containerClassName=""
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+        }}
+      />
     </>
   );
 }
 
-export default App;

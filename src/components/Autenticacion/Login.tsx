@@ -1,20 +1,34 @@
-import React, { useState } from "react";
-import { useLogin } from "../Hooks/Login";
+import React, { useEffect, useState } from "react";
+import { useLogin } from "../../Hooks/Login";
 import { useNavigate } from "react-router-dom";
+import { useUsuario } from "../../Context/usuarioContex";
+
 
 
 const Login = () => {
   const navigate = useNavigate();
+  const {setUsuario} = useUsuario();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const {fetchLogin} = useLogin();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-   await fetchLogin(username,password);
-   navigate("/home");
-
+   await fetchLogin(username,password,setUsuario);
+   
   };
+
   
+  const refreshLogin = (setUsuario:any) => {
+    const ls = localStorage.getItem("usuario");
+    if (ls) {
+      setUsuario(JSON.parse(ls));
+      navigate("/home");
+    }
+  }
+
+  useEffect(() => {
+    refreshLogin(setUsuario);
+  }, []);
   
 
   return (
@@ -66,6 +80,12 @@ const Login = () => {
             Iniciar Sesión
           </button>
         </form>
+
+        <button onClick={()=>{
+          navigate('/register');
+        }} className="w-full mt-4 text-sm text-center text-blue-500">
+          ¿No tienes cuenta? Regístrate
+        </button>
       </div>
     </div>
   );

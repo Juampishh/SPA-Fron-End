@@ -78,7 +78,7 @@ const createFetchApi = () => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      const message = errorData.msg || "Error en la solicitud";
+      const message = errorData.message || "Error en la solicitud";
 
       return { code: response.status, data: null, message };
     }
