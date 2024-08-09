@@ -1,5 +1,4 @@
-
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -8,19 +7,6 @@ const Footer = () => {
         <div className="mb-4 md:mb-0">
           <h2 className="text-lg font-bold text-[#E91E63]">Sentirse Bien</h2>
           <p className="text-sm">© 2024 Todos los derechos reservados.</p>
-        </div>
-        <div>
-          <ul className="flex space-x-4">
-            <li>
-              <a href="#" className="text-gray-800 hover:text-[#E91E63]">Inicio</a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-800 hover:text-[#E91E63]">Sobre Nosotros</a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-800 hover:text-[#E91E63]">Contacto</a>
-            </li>
-          </ul>
         </div>
       </div>
       <div className="flex flex-col w-full mt-4 md:flex-row">
@@ -65,6 +51,6 @@ const Footer = () => {
       </div>
     </footer>
   );
-}
+};
 
 export default Footer;
