@@ -1,7 +1,16 @@
+
+import { NavbarComponent } from "./components/Navbar";
+import { CardComponent } from "./components/Carousel";
+
 function Container() {
   return (
-    <div className=" w-full h-screen ">
-      <h1 className="text-gray-700">Container</h1>
+    <div className="w-full h-screen ">
+      <NavbarComponent />
+      <div className="flex gap-2 p-2">
+        <CardComponent />
+        <CardComponent />
+        <CardComponent />
+      </div>
     </div>
   );
 }
