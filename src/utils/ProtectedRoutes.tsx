@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoutes = ({
   canAccess,
-  redirectPath = "/login",
+  redirectPath = "/",
 }: {
   canAccess: boolean;
   redirectPath?: string;

@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useLogin } from "../../Hooks/Login";
 import { RegisterType } from "../../Types/Register";
+import toast from "react-hot-toast";
 
 export const Register = () => {
   const navigate = useNavigate();
@@ -32,13 +33,11 @@ export const Register = () => {
       type: undefined,
     };
     try {
-      console.log(data);
-
       await fetchRegister(data);
 
       navigate("/home");
     } catch (error) {
-      console.error("Error al registrar:", error);
+      toast.error("Error al registrarse");
     }
   };
 

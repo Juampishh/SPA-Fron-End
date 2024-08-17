@@ -15,7 +15,7 @@ export function useLogin() {
     const response = await Login(username, password);
     if (response.code === 200) {
       setUser(response.data);
-      navigate("/home");
+      navigate("/");
       toast.success("Bienvenido a Sentirse Bien");
       localStorage.setItem("usuario", JSON.stringify(response.data));
       return response;

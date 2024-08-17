@@ -19,7 +19,7 @@ const Login = () => {
     const ls = localStorage.getItem("usuario");
     if (ls) {
       setUsuario(JSON.parse(ls));
-      navigate("/home");
+      navigate("/");
     }
   };
 

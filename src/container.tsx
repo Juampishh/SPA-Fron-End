@@ -1,7 +1,11 @@
+import { useState, useEffect } from "react";
 import { NavbarComponent } from "./components/Navbar/Navbar";
-import { CardComponent } from "./components/Layout/Card";
 import Footer from "./components/Footer/Footer";
 import Carousel from "./components/Layout/Carousel";
+import { useServices } from "./Hooks/Services";
+import { CardComponent } from "./components/Layout/Card";
+import CategoryFilter from "./components/Layout/Filter";
+import { Service } from "./Types/Services";
 
 function Container() {
   const images = [
@@ -9,14 +13,53 @@ function Container() {
     "./public/Carousel/sp3.jpg",
     "./public/Carousel/sp1.jpg",
   ];
+  const { services } = useServices();
+  const [filteredServices, setFilteredServices] = useState<Service[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [categories, setCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (services) {
+      const uniqueCategories = Array.from(
+        new Set(services.map((service) => service.category))
+      );
+      setCategories(uniqueCategories);
+      setFilteredServices(
+        selectedCategory
+          ? services.filter((service) => service.category === selectedCategory)
+          : services
+      );
+    }
+  }, [services, selectedCategory]);
+
   return (
-    <div className="w-full h-screen ">
+    <div className="w-full h-screen">
       <NavbarComponent />
       <div className="flex flex-col">
         <Carousel images={images} />
+        <div id="services" className="p-4">
+          <CategoryFilter
+            categories={categories}
+            onFilterChange={setSelectedCategory}
+          />
+          <div className="flex flex-wrap justify-center gap-4">
+            {filteredServices.map((service) => (
+              <CardComponent
+                key={service.id}
+                url={service.image_url}
+                title={service.service_name}
+                description={service.description}
+                cost={service.cost}
+                duration={service.duration}
+                rating={service.rating}
+              />
+            ))}
+          </div>
+        </div>
       </div>
       <Footer />
     </div>
   );
 }
+
 export default Container;
