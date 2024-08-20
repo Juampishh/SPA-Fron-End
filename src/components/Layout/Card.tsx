@@ -78,21 +78,21 @@ export const CardComponent = ({
 
   return (
     <>
-      <Card className="flex flex-col transition-shadow duration-300 border border-gray-200 rounded-lg shadow-lg hover:shadow-xl w-80">
+      <Card className="flex flex-col transition-shadow duration-300 border border-gray-200 rounded-lg shadow-md hover:shadow-lg w-80">
         <CardHeader className="overflow-hidden rounded-t-lg">
           <img
             src={validUrl}
             alt={title}
-            className="object-cover w-full h-48 transition-transform transform cursor-pointer md:h-56 lg:h-64 hover:scale-105"
+            className="object-cover w-full h-48 transition-transform transform rounded-t-lg cursor-pointer md:h-56 lg:h-64 hover:scale-105"
             onClick={openModal}
           />
         </CardHeader>
-        <CardContent className="flex flex-col flex-grow p-4 space-y-4">
+        <CardContent className="flex flex-col flex-grow p-4 space-y-4 bg-white rounded-b-lg">
           <div className="flex-1">
-            <CardTitle className="text-2xl font-bold text-center text-gray-800">
+            <CardTitle className="text-2xl font-semibold text-center text-gray-800">
               {title}
             </CardTitle>
-            <CardDescription className="w-full py-2 text-lg text-center text-gray-600">
+            <CardDescription className="w-full py-2 text-xs text-center text-gray-600">
               {description}
             </CardDescription>
           </div>
@@ -100,7 +100,7 @@ export const CardComponent = ({
             <Button
               size="sm"
               color="primary"
-              className="w-full px-4 py-2 mt-2 text-white rounded bg-Verde hover:bg-Rosa focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              className="w-full px-4 py-2 mt-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
             >
               Reservar
             </Button>
@@ -117,7 +117,7 @@ export const CardComponent = ({
       >
         <button
           onClick={closeModal}
-          className="absolute text-2xl text-gray-600 top-4 right-4"
+          className="absolute text-2xl text-gray-700 top-4 right-4 hover:text-gray-900"
         >
           &times;
         </button>
@@ -131,15 +131,20 @@ export const CardComponent = ({
           <img
             src={validUrl}
             alt={title}
-            className="object-cover w-1/2 h-full"
+            className="object-cover w-1/2 h-full rounded-l-lg"
           />
-          <div className="flex flex-col w-1/2 p-6 overflow-y-auto bg-gray-50">
+          <div className="flex flex-col w-1/2 p-6 overflow-y-auto rounded-r-lg bg-gray-50">
             <div>
-              <h2 className="mb-4 text-3xl font-bold text-gray-800">{title}</h2>
+              <h2 className="mb-4 text-3xl font-semibold text-gray-800">
+                {title}
+              </h2>
               <p className="mb-4 text-lg text-gray-600">{description}</p>
               <div className="mt-4">
                 <p className="text-xl font-medium text-gray-800">
-                  Costo: <span className="font-semibold">{"$" + cost}</span>
+                  Costo:{" "}
+                  <span className="font-semibold text-green-600">
+                    {"$" + cost}
+                  </span>
                 </p>
                 <p className="text-xl font-medium text-gray-800">
                   Duración: <span className="font-semibold">{duration}</span>
@@ -156,7 +161,7 @@ export const CardComponent = ({
               <Button
                 size="md"
                 color="primary"
-                className="w-full px-6 py-3 text-white rounded bg-Verde hover:bg-Rosa focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                className="w-full px-6 py-3 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
               >
                 Reservar
               </Button>

@@ -4,10 +4,12 @@ import { NavbarComponent } from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { UpdateUser } from "../../API/Profile";
 
 const EditProfile = () => {
   const { usuario } = useUsuario();
-  const { firstName, lastName, email, password } = usuario;
+
+  const { firstName, lastName, email, password, id } = usuario;
   const {
     register,
     handleSubmit,
@@ -22,14 +24,21 @@ const EditProfile = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const validData = {
+      ...data,
+      firstName: data.name.split(" ")[0],
+      lastName: data.name.split(" ")[1],
+    };
+    delete validData.name;
+    console.log(validData);
+    await UpdateUser(id, validData);
   };
 
   return (
     <>
       <NavbarComponent />
-      <div className="max-w-3xl p-8 mx-auto bg-gray-100 rounded-lg shadow-lg my-12 min-h-[400px]">
+      <div className="max-w-3xl p-8 mx-auto bg-AntiFlashWhite rounded-lg shadow-lg my-12 min-h-[400px]">
         <h2 className="mb-6 text-3xl font-semibold text-gray-800">
           Editar Perfil
         </h2>

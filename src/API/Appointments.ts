@@ -6,3 +6,11 @@ export const GetAppointments = async (id: number) => {
   });
   return response;
 };
+export const GetAllAppointments = async (id: number) => {
+  const response = await FetchApi({
+    path: `appointments/all/${id}`,
+    method: "GET",
+  });
+
+  return response;
+};

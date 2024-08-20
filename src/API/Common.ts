@@ -1,5 +1,4 @@
-
-const API_URL = "http://localhost:3000/";
+const API_URL = "http://localhost:3005/";
 
 type FetchHeaders = {
   "Content-Type": string;
@@ -14,14 +13,11 @@ type FetchRequest = {
   contentType?: string;
 };
 
-
 type FetchResponse<T> = {
   code: number;
   data: T | null;
   message: string;
 };
-
-
 
 const createFetchApi = () => {
   return async function FetchApi<T>({
@@ -37,7 +33,6 @@ const createFetchApi = () => {
     };
 
     let url = `${API_URL}${path}`;
-   
 
     if (requiresAuth) {
       if (token) {
@@ -93,6 +88,5 @@ const createFetchApi = () => {
     return { code: response.status, data: rData, message: "Success" };
   };
 };
-
 
 export const FetchApi = createFetchApi();

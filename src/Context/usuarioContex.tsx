@@ -1,13 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
+type Usuario = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  type: string;
+};
 
 const UsuarioContext = React.createContext({
-  usuario: {},
+  usuario: {} as Usuario,
   setUsuario: () => {},
   loading: false,
   setLoading: () => {},
 });
 
-export function UsuarioProvider(props) {
+export function UsuarioProvider(props: any) {
   const [usuario, setUsuario] = useState({});
   const [loading, setLoading] = useState(false);
   const ls = localStorage.getItem("usuario");

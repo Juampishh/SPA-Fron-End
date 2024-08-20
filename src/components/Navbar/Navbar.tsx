@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -11,9 +11,9 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { CiUser } from "react-icons/ci";
 import { FiLogOut } from "react-icons/fi";
-import { FaSignInAlt } from "react-icons/fa"; // Importar el icono de inicio de sesión
-import { IoMdClose } from "react-icons/io"; // Importar el icono para cerrar el menú
-import { motion, AnimatePresence } from "framer-motion"; // Importar Framer Motion
+import { FaSignInAlt } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const NavbarComponent = () => {
   const { usuario } = useUsuario();
@@ -26,7 +26,7 @@ export const NavbarComponent = () => {
     toast.success("Sesión cerrada");
   };
 
-  const scrollToSection = (id) => {
+  const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       window.scrollTo({
@@ -40,7 +40,14 @@ export const NavbarComponent = () => {
     <Navbar className="w-full">
       <NavbarContainer className="relative flex justify-between">
         <NavbarBrand className="text-Verde">
-          <img className="w-24 p-2" src="./public/Logo.jpeg" alt="Logo" />
+          <img
+            className="w-24 p-2 rounded-lg cursor-pointer hover:scale-105"
+            onClick={() => {
+              navigate("/");
+            }}
+            src="./public/Logo.jpeg"
+            alt="Logo"
+          />
           <span className="ml-4 text-xs">Sentirse Bien</span>
         </NavbarBrand>
         <NavbarList className="flex items-center justify-center">
@@ -57,6 +64,15 @@ export const NavbarComponent = () => {
           </NavbarItem>
           <NavbarItem className="hover:text-Verde">Sobre nosotros</NavbarItem>
           <NavbarItem className="hover:text-Verde">Contacto</NavbarItem>
+          <NavbarItem
+            className="hover:text-Verde"
+            onClick={() => {
+              navigate("/notices");
+            }}
+          >
+            Noticias
+          </NavbarItem>
+          <NavbarItem className="hover:text-Verde">Opiniones</NavbarItem>
         </NavbarList>
         <NavbarList className="relative flex items-center">
           {usuario.firstName || usuario.lastName ? (
@@ -90,16 +106,30 @@ export const NavbarComponent = () => {
                       <CiUser className="w-5 h-5 mr-2" />
                       Perfil
                     </div>
-                    <div
-                      className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
-                      onClick={() => {
-                        navigate("/reservations");
-                        setMenuOpen(false);
-                      }}
-                    >
-                      <CiUser className="w-5 h-5 mr-2" />
-                      Reservas
-                    </div>
+                    {usuario.type === "admin" ? (
+                      <div
+                        className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
+                        onClick={() => {
+                          navigate("/admin-reservations");
+                          setMenuOpen(false);
+                        }}
+                      >
+                        <CiUser className="w-5 h-5 mr-2" />
+                        Reservas
+                      </div>
+                    ) : (
+                      <div
+                        className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
+                        onClick={() => {
+                          navigate("/reservations");
+                          setMenuOpen(false);
+                        }}
+                      >
+                        <CiUser className="w-5 h-5 mr-2" />
+                        Reservas
+                      </div>
+                    )}
+
                     <div
                       className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
                       onClick={Logout}

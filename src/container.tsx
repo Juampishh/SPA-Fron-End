@@ -6,6 +6,7 @@ import { useServices } from "./Hooks/Services";
 import { CardComponent } from "./components/Layout/Card";
 import CategoryFilter from "./components/Layout/Filter";
 import { Service } from "./Types/Services";
+import Loader from "./components/Loaders/Loader";
 
 function Container() {
   const images = [
@@ -13,7 +14,7 @@ function Container() {
     "./public/Carousel/sp3.jpg",
     "./public/Carousel/sp1.jpg",
   ];
-  const { services } = useServices();
+  const { services, loading } = useServices();
   const [filteredServices, setFilteredServices] = useState<Service[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [categories, setCategories] = useState<string[]>([]);
@@ -33,16 +34,20 @@ function Container() {
   }, [services, selectedCategory]);
 
   return (
-    <div className="w-full h-screen">
+    <div className="w-full h-screen bg-AntiFlashWhite">
       <NavbarComponent />
       <div className="flex flex-col">
         <Carousel images={images} />
-        <div id="services" className="p-4">
+        <div id="services" className="pt-3">
           <CategoryFilter
             categories={categories}
             onFilterChange={setSelectedCategory}
           />
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-4 bg-AntiFlashWhite">
+            <div className="flex justify-center w-full">
+              {loading && <Loader size={90} loading={true} />}
+            </div>
+
             {filteredServices.map((service) => (
               <CardComponent
                 key={service.id}

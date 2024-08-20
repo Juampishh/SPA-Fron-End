@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 import { Service } from "../Types/Services";
 export const useServices = () => {
   const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const fetchServices = async () => {
+    setLoading(true);
     const response = await GetServices();
+    setLoading(false);
     if (response.code === 200) {
       setServices(response.data);
     } else {
@@ -15,5 +18,5 @@ export const useServices = () => {
   useEffect(() => {
     fetchServices();
   }, []);
-  return { services };
+  return { services, loading };
 };

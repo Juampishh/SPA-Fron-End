@@ -4,9 +4,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        Rosa: '#E91E63',
-        Verde:'#8BC34A'
-       
+        Rosa: "#E91E63",
+        Verde: "#8BC34A",
+        AntiFlashWhite: "#EFF1F6",
       },
     },
   },

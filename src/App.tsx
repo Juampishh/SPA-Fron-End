@@ -9,6 +9,8 @@ import { Toaster } from "react-hot-toast";
 import { Register } from "./components/Autenticacion/Register";
 import EditProfile from "./components/Profile/Profile";
 import Reservations from "./components/Reservations/Reservetaions";
+import NewsAndPromotions from "./components/Notices/Notices";
+import ReservationsAdmin from "./components/Reservations/Admin-reservations";
 export default () => (
   <UsuarioProvider>
     <App></App>
@@ -29,11 +31,18 @@ function App() {
               />
             }
           >
+            {usuario.type === "admin" && (
+              <Route
+                path="/admin-reservations"
+                element={<ReservationsAdmin />}
+              />
+            )}
             <Route path="/edit-profile" element={<EditProfile />} />
             <Route path="/reservations" element={<Reservations />} />
           </Route>
           <Route path="/" element={<Container />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/notices" element={<NewsAndPromotions />} />
           <Route path="/register" element={<Register />} />
         </Routes>
       </BrowserRouter>
