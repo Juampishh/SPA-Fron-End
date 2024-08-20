@@ -62,7 +62,9 @@ export const NavbarComponent = () => {
           >
             Servicios
           </NavbarItem>
-          <NavbarItem className="hover:text-Verde">Sobre nosotros</NavbarItem>
+          <NavbarItem className="hover:text-Verde"
+          onClick={() => navigate("/about-us")}
+          >Sobre nosotros</NavbarItem>
           <NavbarItem className="hover:text-Verde">Contacto</NavbarItem>
           <NavbarItem
             className="hover:text-Verde"

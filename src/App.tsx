@@ -11,6 +11,7 @@ import EditProfile from "./components/Profile/Profile";
 import Reservations from "./components/Reservations/Reservetaions";
 import NewsAndPromotions from "./components/Notices/Notices";
 import ReservationsAdmin from "./components/Reservations/Admin-reservations";
+import AboutUs from "./components/About-us/AboutUs";
 export default () => (
   <UsuarioProvider>
     <App></App>
@@ -44,6 +45,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/notices" element={<NewsAndPromotions />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/about-us" element={<AboutUs />} />
         </Routes>
       </BrowserRouter>
       <Toaster
