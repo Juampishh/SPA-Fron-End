@@ -1,3 +1,4 @@
+import { CreateAppointmentType } from "../Types/Appointments";
 import { FetchApi } from "./Common";
 export const GetAppointments = async (id: number) => {
   const response = await FetchApi({
@@ -6,11 +7,19 @@ export const GetAppointments = async (id: number) => {
   });
   return response;
 };
+
 export const GetAllAppointments = async (id: number) => {
   const response = await FetchApi({
     path: `appointments/all/${id}`,
     method: "GET",
   });
-
+  return response;
+};
+export const CreateAppointment = async (data: CreateAppointmentType) => {
+  const response = await FetchApi({
+    path: "appointments/",
+    method: "POST",
+    payload: data,
+  });
   return response;
 };

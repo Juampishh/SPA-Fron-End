@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppointments } from "../../Hooks/Appointments";
 import Footer from "../Footer/Footer";
 import { NavbarComponent } from "../Navbar/Navbar";
@@ -119,7 +119,12 @@ const ReservationModal = ({ reservation, onClose }) => (
 );
 
 const Reservations = () => {
-  const { appointments, loading } = useAppointments();
+  const { appointments, fetchAppointmentsData, loading } = useAppointments();
+
+  // Ejecutar la función de fetch cuando el componente se monta
+  useEffect(() => {
+    fetchAppointmentsData();
+  }, [fetchAppointmentsData]);
   const [selectedReservation, setSelectedReservation] = useState(null);
 
   const handleMoreInfo = (reservation) => {

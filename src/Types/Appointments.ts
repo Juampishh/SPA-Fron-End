@@ -8,3 +8,8 @@ export interface Appointment {
   created_at: string;
   Service: Service;
 }
+export interface CreateAppointmentType {
+  user_id: number;
+  service_id: number;
+  appointment_date: string;
+}
