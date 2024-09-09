@@ -12,6 +12,8 @@ import Reservations from "./components/Reservations/Reservetaions";
 import NewsAndPromotions from "./components/Notices/Notices";
 import ReservationsAdmin from "./components/Reservations/Admin-reservations";
 import AboutUs from "./components/About-us/AboutUs";
+import { Opinions } from "./components/Opinions/Opinions";
+import { Contact } from "./components/Contact/Contact";
 export default () => (
   <UsuarioProvider>
     <App></App>
@@ -46,6 +48,9 @@ function App() {
           <Route path="/notices" element={<NewsAndPromotions />} />
           <Route path="/register" element={<Register />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/opinions" element={<Opinions />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<h1>404</h1>} />
         </Routes>
       </BrowserRouter>
       <Toaster

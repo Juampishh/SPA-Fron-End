@@ -10,7 +10,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   onFilterChange,
 }) => {
   return (
-    <div className="flex flex-col items-center mb-6">
+    <div className="flex flex-col items-center ">
       <label
         htmlFor="category"
         className="mb-2 text-lg font-semibold text-gray-800"

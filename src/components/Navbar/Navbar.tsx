@@ -62,10 +62,20 @@ export const NavbarComponent = () => {
           >
             Servicios
           </NavbarItem>
-          <NavbarItem className="hover:text-Verde"
-          onClick={() => navigate("/about-us")}
-          >Sobre nosotros</NavbarItem>
-          <NavbarItem className="hover:text-Verde">Contacto</NavbarItem>
+          <NavbarItem
+            className="hover:text-Verde"
+            onClick={() => navigate("/about-us")}
+          >
+            Sobre nosotros
+          </NavbarItem>
+          <NavbarItem
+            onClick={() => {
+              navigate("/contact");
+            }}
+            className="hover:text-Verde"
+          >
+            Contacto
+          </NavbarItem>
           <NavbarItem
             className="hover:text-Verde"
             onClick={() => {
@@ -74,7 +84,14 @@ export const NavbarComponent = () => {
           >
             Noticias
           </NavbarItem>
-          <NavbarItem className="hover:text-Verde">Opiniones</NavbarItem>
+          <NavbarItem
+            onClick={() => {
+              navigate("/opinions");
+            }}
+            className="hover:text-Verde"
+          >
+            Opiniones
+          </NavbarItem>
         </NavbarList>
         <NavbarList className="relative flex items-center">
           {usuario.firstName || usuario.lastName ? (
