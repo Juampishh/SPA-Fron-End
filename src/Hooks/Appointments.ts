@@ -1,46 +1,66 @@
-import { useState } from "react";
-import { GetAppointments, GetAllAppointments } from "../API/Appointments";
-import { Appointment } from "../Types/Appointments";
+import { useState, useEffect, useCallback } from "react";
+import {
+  GetAppointments,
+  GetAllAppointments,
+  CreateAppointment,
+} from "../API/Appointments";
+import { Appointment, CreateAppointmentType } from "../Types/Appointments";
 import { toast } from "react-hot-toast";
 import { useUsuario } from "../Context/usuarioContex";
-import { useEffect } from "react";
+
 export const useAppointments = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { usuario } = useUsuario();
-  const id = usuario.id;
-  const fetchAppointments = async (id: number) => {
+  const id = usuario?.id;
+
+  const fetchAppointmentsData = useCallback(async () => {
     if (!usuario) {
       return;
     }
     setLoading(true);
-    const response = await GetAppointments(id);
-    setLoading(false);
-    if (response.code === 200) {
-      setAppointments(response.data);
-    } else {
-      toast.error(response.message);
+    try {
+      let response;
+      if (usuario.type === "admin") {
+        // Fetch all appointments if the user is an admin
+        response = await GetAllAppointments(id);
+      } else {
+        // Fetch appointments for the specific user if not an admin
+        response = await GetAppointments(id);
+      }
+
+      if (response.code === 200) {
+        setAppointments(response.data);
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error("Error fetching appointments");
+    } finally {
+      setLoading(false);
     }
-  };
-  const fetchAllAppointments = async () => {
+  }, [usuario, id]);
+
+  const fetchCreateAppointment = async (data: CreateAppointmentType) => {
     setLoading(true);
-    const response = await GetAllAppointments(id);
-    setLoading(false);
-    console.log(response);
-
-    if (response.code === 200) {
-      setAppointments(response.data);
-    } else {
-      toast.error(response.message);
+    try {
+      const response = await CreateAppointment(data);
+      if (response.code === 201) {
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error("Error creating appointment");
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (usuario.type === "admin") {
-      fetchAllAppointments();
-    } else {
-      fetchAppointments(id);
-    }
-  }, []);
-  return { appointments, fetchAppointments, loading, fetchAllAppointments };
+  return {
+    appointments,
+    fetchAppointmentsData,
+    loading,
+    fetchCreateAppointment,
+  };
 };

@@ -51,6 +51,7 @@ function Container() {
             {filteredServices.map((service) => (
               <CardComponent
                 key={service.id}
+                id={service.id}
                 url={service.image_url}
                 title={service.service_name}
                 description={service.description}
