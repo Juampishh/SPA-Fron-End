@@ -18,12 +18,11 @@ export const useOpinions = () => {
       }
     } catch (error) {
       toast.error("Error fetching opinions");
+      console.log(error);
     } finally {
       setLoading(false);
     }
   }, []);
-
-  
 
   return {
     loading,

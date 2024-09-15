@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Login, Register } from "../API/Login";
 import { toast } from "react-hot-toast";
-import { useUsuario } from "../Context/usuarioContex";
+import { useUsuario, Usuario } from "../Context/usuarioContex";
 import { RegisterType } from "../Types/Register";
 
 export function useLogin() {
@@ -10,7 +10,7 @@ export function useLogin() {
   const fetchLogin = async (
     username: string,
     password: string,
-    setUser: any
+    setUser: (user: Usuario) => void
   ) => {
     const response = await Login(username, password);
     if (response.code === 200) {

@@ -11,10 +11,9 @@ import {
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { CardComponentProps } from "../../Types/CardComponentsProps";
 import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { useUsuario } from "../../Context/usuarioContex";
 import { useAppointments } from "../../Hooks/Appointments";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const modalVariants = {
@@ -86,9 +85,8 @@ export const CardComponent = ({
   const openReserveModal = () => setIsReserveModalOpen(true);
   const closeReserveModal = () => setIsReserveModalOpen(false);
   const { fetchCreateAppointment } = useAppointments();
-  const navigate = useNavigate();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: FieldValues) => {
     const { reservationDate } = data;
 
     // Definir el horario laboral

@@ -14,9 +14,28 @@ import {
 import { motion } from "framer-motion";
 import Loader from "../Loaders/Loader";
 
-// Función para traducir y convertir el estado a mayúsculas
-const translateStatus = (status) => {
-  const statuses = {
+// Definir tipos para las reservas
+interface Reservation {
+  id: number;
+  image_url: string;
+  service_name: string;
+  appointment_date: string;
+  duration: string;
+  cost: string;
+  rating: number;
+  description: string;
+  status: "pending" | "completed" | "expired";
+}
+
+interface ReservationCardAdminProps {
+  reservation: Reservation;
+  onMoreInfo: (reservation: Reservation) => void;
+  onEdit: (reservation: Reservation) => void;
+  onDelete: (reservationId: number) => void;
+}
+
+const translateStatus = (status: Reservation["status"]) => {
+  const statuses: Record<Reservation["status"], string> = {
     pending: "PENDIENTE",
     completed: "COMPLETADO",
     expired: "EXPIRADO",
@@ -24,7 +43,7 @@ const translateStatus = (status) => {
   return statuses[status] || status.toUpperCase();
 };
 
-function handleState(status) {
+function handleState(status: Reservation["status"]) {
   switch (status) {
     case "completed":
       return "bg-green-300 text-white";
@@ -40,7 +59,7 @@ const ReservationCardAdmin = ({
   onMoreInfo,
   onEdit,
   onDelete,
-}) => (
+}: ReservationCardAdminProps) => (
   <div className="p-6 mb-6 transition-shadow duration-300 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl">
     <img
       src={`servicios/${reservation.image_url}`}
@@ -103,7 +122,12 @@ const ReservationCardAdmin = ({
   </div>
 );
 
-const ReservationModal = ({ reservation, onClose }) => (
+interface ReservationModalProps {
+  reservation: Reservation;
+  onClose: () => void;
+}
+
+const ReservationModal = ({ reservation, onClose }: ReservationModalProps) => (
   <motion.div
     className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     initial={{ opacity: 0 }}
@@ -142,15 +166,33 @@ const ReservationModal = ({ reservation, onClose }) => (
 );
 
 const ReservationsAdmin = () => {
-  const { appointments, fetchAppointmentsData, loading } = useAppointments();
+  const {
+    appointments: rawAppointments,
+    fetchAppointmentsData,
+    loading,
+  } = useAppointments();
+  const [selectedReservation, setSelectedReservation] =
+    useState<Reservation | null>(null);
 
-  // Ejecutar la función de fetch cuando el componente se monta
   useEffect(() => {
     fetchAppointmentsData();
   }, [fetchAppointmentsData]);
-  const [selectedReservation, setSelectedReservation] = useState(null);
 
-  const handleMoreInfo = (reservation) => {
+  const appointments: Reservation[] = rawAppointments.map(
+    (appointment: any) => ({
+      id: appointment.id,
+      image_url: appointment.image_url,
+      service_name: appointment.service_name,
+      appointment_date: appointment.appointment_date,
+      duration: appointment.duration,
+      cost: appointment.cost,
+      rating: appointment.rating,
+      description: appointment.description,
+      status: appointment.status,
+    })
+  );
+
+  const handleMoreInfo = (reservation: Reservation) => {
     setSelectedReservation(reservation);
   };
 
@@ -158,12 +200,12 @@ const ReservationsAdmin = () => {
     setSelectedReservation(null);
   };
 
-  const handleEdit = (reservation) => {
+  const handleEdit = (reservation: Reservation) => {
     // Aquí iría la lógica para editar la reserva
     alert(`Editando reserva con ID: ${reservation.id}`);
   };
 
-  const handleDelete = (reservationId) => {
+  const handleDelete = (reservationId: number) => {
     // Aquí iría la lógica para eliminar la reserva
     alert(`Eliminando reserva con ID: ${reservationId}`);
   };

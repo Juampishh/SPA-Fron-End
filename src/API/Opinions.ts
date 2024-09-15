@@ -8,7 +8,11 @@ export const GetOpinions = async () => {
   return response;
 };
 
-export const CreateOpinion = async (data: any) => {
+export const CreateOpinion = async (data: {
+  name: string;
+  opinion: string;
+  rating: number;
+}) => {
   const response = await FetchApi({
     path: "opinions",
     method: "POST",

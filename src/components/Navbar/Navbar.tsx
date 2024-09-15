@@ -21,8 +21,8 @@ export const NavbarComponent = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const userButtonRef = useRef<HTMLDivElement>(null);
 
+  const userButtonRef = useRef<HTMLLIElement>(null);
   const Logout = () => {
     localStorage.removeItem("usuario");
     window.location.reload();

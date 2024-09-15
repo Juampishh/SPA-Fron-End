@@ -1,5 +1,5 @@
 import { FetchApi } from "./Common";
-import { UpdateUserType } from "../types/User";
+import { UpdateUserType } from "../Types/User";
 import toast from "react-hot-toast";
 export const UpdateUser = async (id: number, data: UpdateUserType) => {
   const response = await FetchApi({

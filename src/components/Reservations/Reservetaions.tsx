@@ -12,8 +12,35 @@ import {
 import { motion } from "framer-motion";
 import Loader from "../Loaders/Loader";
 
+// Definir los tipos
+interface Service {
+  image_url: string;
+  service_name: string;
+  duration: string;
+  cost: string;
+  rating: number;
+  description: string;
+}
+
+interface Reservation {
+  id: string;
+  appointment_date: string;
+  status: "pending" | "completed" | "expired";
+  service: Service;
+}
+
+interface ReservationCardProps {
+  reservation: Reservation;
+  onMoreInfo: (reservation: Reservation) => void;
+}
+
+interface ReservationModalProps {
+  reservation: Reservation;
+  onClose: () => void;
+}
+
 // Función para traducir y convertir el estado a mayúsculas
-const translateStatus = (status) => {
+const translateStatus = (status: Reservation["status"]): string => {
   const statuses = {
     pending: "PENDIENTE",
     completed: "COMPLETADO",
@@ -22,7 +49,7 @@ const translateStatus = (status) => {
   return statuses[status] || status.toUpperCase();
 };
 
-function handleState(status) {
+function handleState(status: Reservation["status"]): string {
   switch (status) {
     case "completed":
       return "bg-green-300 text-white";
@@ -33,7 +60,10 @@ function handleState(status) {
   }
 }
 
-const ReservationCard = ({ reservation, onMoreInfo }) => (
+const ReservationCard: React.FC<ReservationCardProps> = ({
+  reservation,
+  onMoreInfo,
+}) => (
   <div className="p-6 mb-6 transition-shadow duration-300 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl">
     <img
       src={`servicios/${reservation.service.image_url}`}
@@ -91,7 +121,10 @@ const ReservationCard = ({ reservation, onMoreInfo }) => (
   </div>
 );
 
-const ReservationModal = ({ reservation, onClose }) => (
+const ReservationModal: React.FC<ReservationModalProps> = ({
+  reservation,
+  onClose,
+}) => (
   <motion.div
     className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     initial={{ opacity: 0 }}
@@ -136,7 +169,7 @@ const ReservationModal = ({ reservation, onClose }) => (
   </motion.div>
 );
 
-const Reservations = () => {
+const Reservations: React.FC = () => {
   const { appointments, fetchAppointmentsData, loading } = useAppointments();
 
   // Ejecutar la función de fetch cuando el componente se monta
@@ -144,9 +177,10 @@ const Reservations = () => {
     fetchAppointmentsData();
   }, [fetchAppointmentsData]);
 
-  const [selectedReservation, setSelectedReservation] = useState(null);
+  const [selectedReservation, setSelectedReservation] =
+    useState<Reservation | null>(null);
 
-  const handleMoreInfo = (reservation) => {
+  const handleMoreInfo = (reservation: Reservation) => {
     setSelectedReservation(reservation);
   };
 

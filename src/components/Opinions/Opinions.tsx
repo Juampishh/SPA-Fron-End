@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import Footer from "../Footer/Footer";
 import { NavbarComponent } from "../Navbar/Navbar";
 import Modal from "react-modal";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import { useUsuario } from "../../Context/usuarioContex";
+
 import { useOpinions } from "../../Hooks/Opinions";
 import { CreateOpinion } from "../../API/Opinions";
 import toast from "react-hot-toast";
@@ -15,7 +15,7 @@ export const Opinions = () => {
   const { opinions, fetchOpinionsData } = useOpinions();
   const [visibleCount, setVisibleCount] = useState(6);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { usuario } = useUsuario();
+
   // React Hook Form
   const {
     register,
@@ -25,7 +25,7 @@ export const Opinions = () => {
   } = useForm();
 
   // Agregar nueva opinión
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: FieldValues) => {
     const newOpinion = {
       name: data.name || "Anonimo",
       opinion: data.opinion,
@@ -43,7 +43,7 @@ export const Opinions = () => {
     fetchOpinionsData();
   }, []);
   // Mostrar estrellas según la puntuación
-  const renderStars = (rating) => {
+  const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
       <span
         key={i}
@@ -178,7 +178,7 @@ export const Opinions = () => {
               />
               {errors.opinion && (
                 <p className="mt-1 text-sm text-red-500">
-                  {errors.opinion.message}
+                  {String(errors.opinion.message)}
                 </p>
               )}
             </div>
@@ -204,7 +204,7 @@ export const Opinions = () => {
               />
               {errors.rating && (
                 <p className="mt-1 text-sm text-red-500">
-                  {errors.rating.message}
+                  {String(errors.rating.message)}
                 </p>
               )}
             </div>

@@ -27,7 +27,7 @@ const createFetchApi = () => {
     requiresAuth,
     contentType,
     token,
-  }: FetchRequest & { token?: string }): Promise<FetchResponse<any>> {
+  }: FetchRequest & { token?: string }): Promise<FetchResponse<T>> {
     const headers: FetchHeaders = {
       "Content-Type": contentType || "application/json",
     };
@@ -43,7 +43,7 @@ const createFetchApi = () => {
       }
     }
 
-    let body;
+    let body: string | FormData | undefined;
     if (method === "GET" && payload !== undefined) {
       let queryString: string;
       if (typeof payload === "object") {
@@ -54,7 +54,7 @@ const createFetchApi = () => {
           )
           .join("&");
       } else {
-        queryString = payload;
+        queryString = payload as string;
       }
       url += `?${queryString}`;
     } else if (payload instanceof FormData) {
@@ -63,7 +63,7 @@ const createFetchApi = () => {
       body = JSON.stringify(payload);
     }
 
-    const options = {
+    const options: RequestInit = {
       method,
       headers,
       body,
@@ -78,13 +78,12 @@ const createFetchApi = () => {
       return { code: response.status, data: null, message };
     }
 
-    let rData: FetchResponse<any> | null = null;
+    let rData: T | null = null;
     if (method !== "DELETE") {
-      rData = await response.json();
+      const result = await response.json();
+      rData = result.data ?? null;
     }
-    if (Object.keys(rData ?? {}).includes("data")) {
-      rData = rData?.data;
-    }
+
     return { code: response.status, data: rData, message: "Success" };
   };
 };

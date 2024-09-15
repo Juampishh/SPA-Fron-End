@@ -38,6 +38,7 @@ export const Register = () => {
       navigate("/home");
     } catch (error) {
       toast.error("Error al registrarse");
+      console.log(error);
     }
   };
 

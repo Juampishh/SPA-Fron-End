@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLogin } from "../../Hooks/Login";
 import { useNavigate } from "react-router-dom";
 import { useUsuario } from "../../Context/usuarioContex";
-
+import { Usuario } from "../../Context/usuarioContex";
 const Login = () => {
   const navigate = useNavigate();
   const { setUsuario } = useUsuario();
@@ -15,7 +15,9 @@ const Login = () => {
     await fetchLogin(username, password, setUsuario);
   };
 
-  const refreshLogin = (setUsuario: any) => {
+  const refreshLogin = (
+    setUsuario: React.Dispatch<React.SetStateAction<Usuario>>
+  ) => {
     const ls = localStorage.getItem("usuario");
     if (ls) {
       setUsuario(JSON.parse(ls));

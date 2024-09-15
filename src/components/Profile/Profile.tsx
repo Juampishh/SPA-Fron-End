@@ -6,15 +6,22 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { UpdateUser } from "../../API/Profile";
 
+// Define el tipo para los datos del formulario
+interface UpdateUserType {
+  name: string;
+  email: string;
+  password: string;
+}
+
 const EditProfile = () => {
   const { usuario } = useUsuario();
-
   const { firstName, lastName, email, password, id } = usuario;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<UpdateUserType>({
     defaultValues: {
       name: `${firstName} ${lastName}`,
       email,
@@ -24,15 +31,8 @@ const EditProfile = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = async (data) => {
-    const validData = {
-      ...data,
-      firstName: data.name.split(" ")[0],
-      lastName: data.name.split(" ")[1],
-    };
-    delete validData.name;
-    console.log(validData);
-    await UpdateUser(id, validData);
+  const onSubmit = async (data: UpdateUserType) => {
+    await UpdateUser(id, data);
   };
 
   return (

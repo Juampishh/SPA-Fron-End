@@ -36,6 +36,7 @@ export const useAppointments = () => {
       }
     } catch (error) {
       toast.error("Error fetching appointments");
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -52,6 +53,7 @@ export const useAppointments = () => {
       }
     } catch (error) {
       toast.error("Error creating appointment");
+      console.log(error);
     } finally {
       setLoading(false);
     }

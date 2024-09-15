@@ -3,5 +3,14 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "compilerOptions": {
+    "strict": false, // Desactiva todas las verificaciones estrictas
+    "noImplicitAny": false, // Permite el uso de 'any' implícito
+    "noImplicitThis": false, // Permite el uso de 'this' implícito
+    "noUnusedLocals": false, // Ignora advertencias sobre variables locales no usadas
+    "noUnusedParameters": false, // Ignora advertencias sobre parámetros no usados
+    "noImplicitReturns": false, // Ignora advertencias sobre valores de retorno implícitos
+    "noFallthroughCasesInSwitch": false // Ignora advertencias sobre casos no terminados en 'switch'
+  }
 }

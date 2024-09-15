@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const variants = {
@@ -7,7 +7,11 @@ const variants = {
   exit: { opacity: 0 },
 };
 
-const Carousel = ({ images }) => {
+interface CarouselProps {
+  images: string[]; // Define que 'images' es un array de strings
+}
+
+const Carousel: React.FC<CarouselProps> = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrevious = () => {
@@ -48,10 +52,10 @@ const Carousel = ({ images }) => {
               Descubre la Tranquilidad y el Renacer
             </h2>
             <p className="mb-4 text-gray-700">
-              Descubre mas sobre nuestros servicios y productos.
+              Descubre más sobre nuestros servicios y productos.
             </p>
             <button className="px-6 py-2 text-white bg-[#8BC34A] rounded-full hover:bg-[#7CB342]">
-              Ver mas
+              Ver más
             </button>
           </div>
         )}

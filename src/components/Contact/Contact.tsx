@@ -1,6 +1,6 @@
 import { NavbarComponent } from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 
 export const Contact = () => {
@@ -13,7 +13,7 @@ export const Contact = () => {
   } = useForm();
 
   // Enviar datos del formulario
-  const onSubmit = (data) => {
+  const onSubmit = (data: FieldValues) => {
     console.log(data);
     toast.success(
       "¡Gracias por contactarnos en SPA SENTIRSE BIEN! Nos pondremos en contacto contigo pronto."
@@ -70,7 +70,7 @@ export const Contact = () => {
                 />
                 {errors.name && (
                   <p className="mt-1 text-sm text-red-500">
-                    {errors.name.message}
+                    {String(errors.name.message)}
                   </p>
                 )}
               </div>
@@ -84,13 +84,17 @@ export const Contact = () => {
                   type="email"
                   {...register("email", {
                     required: "El correo electrónico es requerido",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "El correo electrónico no es válido",
+                    },
                   })}
                   className="w-full px-4 py-2 border rounded-lg"
                   placeholder="Ingresa tu correo electrónico"
                 />
                 {errors.email && (
                   <p className="mt-1 text-sm text-red-500">
-                    {errors.email.message}
+                    {String(errors.email.message)}
                   </p>
                 )}
               </div>
@@ -100,10 +104,20 @@ export const Contact = () => {
                 <label className="block text-gray-700">Teléfono</label>
                 <input
                   type="tel"
-                  {...register("phone")}
+                  {...register("phone", {
+                    pattern: {
+                      value: /^[0-9+]*$/,
+                      message: "El teléfono no es válido",
+                    },
+                  })}
                   className="w-full px-4 py-2 border rounded-lg"
                   placeholder="Ingresa tu teléfono (opcional)"
                 />
+                {errors.phone && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {String(errors.phone.message)}
+                  </p>
+                )}
               </div>
 
               {/* Mensaje */}
@@ -118,7 +132,7 @@ export const Contact = () => {
                 />
                 {errors.message && (
                   <p className="mt-1 text-sm text-red-500">
-                    {errors.message.message}
+                    {String(errors.message.message)}
                   </p>
                 )}
               </div>
