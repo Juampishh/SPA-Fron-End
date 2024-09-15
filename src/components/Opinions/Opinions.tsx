@@ -1,77 +1,18 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import Footer from "../Footer/Footer";
 import { NavbarComponent } from "../Navbar/Navbar";
 import Modal from "react-modal";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { useUsuario } from "../../Context/usuarioContex";
+import { useOpinions } from "../../Hooks/Opinions";
+import { CreateOpinion } from "../../API/Opinions";
+import toast from "react-hot-toast";
 
 Modal.setAppElement("#root"); // Para la accesibilidad
 
 export const Opinions = () => {
-  const [opinions, setOpinions] = useState([
-    {
-      name: "Carlos Mendoza",
-      opinion:
-        "El spa es increíble, las instalaciones son muy relajantes y el masaje que recibí fue de primera clase. Volveré sin duda.",
-      rating: 5,
-    },
-    {
-      name: "Ana Gómez",
-      opinion:
-        "El ambiente es muy agradable y tranquilo, pero el servicio de recepción podría ser más eficiente.",
-      rating: 4,
-    },
-    {
-      name: "Luis Fernández",
-      opinion:
-        "Las instalaciones del spa están bien, pero el masaje no cumplió con mis expectativas. Fue demasiado breve para el precio que pagué.",
-      rating: 3,
-    },
-    {
-      name: "María López",
-      opinion:
-        "La experiencia en el spa fue relajante, aunque el área de saunas estaba un poco sucia. Aun así, disfruté mucho del tratamiento facial.",
-      rating: 4,
-    },
-    {
-      name: "Pedro Ruiz",
-      opinion:
-        "El spa tiene un buen ambiente, pero la calidad del masaje no justificó el costo. No creo que vuelva.",
-      rating: 2,
-    },
-    {
-      name: "Laura Martínez",
-      opinion:
-        "El spa es muy bonito y el personal es amable, pero el servicio fue más lento de lo esperado.",
-      rating: 3,
-    },
-    {
-      name: "Jorge Ortega",
-      opinion:
-        "Excelente lugar para relajarse. Las instalaciones están bien mantenidas y el masaje fue realmente efectivo.",
-      rating: 5,
-    },
-    {
-      name: "Isabel Ramírez",
-      opinion:
-        "Me gustó el ambiente del spa, pero el servicio de masajes no fue tan personalizado como esperaba.",
-      rating: 3,
-    },
-    {
-      name: "Fernando Silva",
-      opinion:
-        "El spa tiene un ambiente muy relajante y las instalaciones son modernas, pero el costo es un poco elevado para lo que ofrecen.",
-      rating: 4,
-    },
-    {
-      name: "Carmen Vázquez",
-      opinion:
-        "La experiencia en el spa fue bastante buena, aunque el tiempo de espera para el tratamiento fue un poco largo.",
-      rating: 4,
-    },
-  ]);
-
+  const { opinions, fetchOpinionsData } = useOpinions();
   const [visibleCount, setVisibleCount] = useState(6);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { usuario } = useUsuario();
@@ -84,17 +25,23 @@ export const Opinions = () => {
   } = useForm();
 
   // Agregar nueva opinión
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const newOpinion = {
       name: data.name || "Anonimo",
       opinion: data.opinion,
       rating: parseInt(data.rating),
     };
-    setOpinions([...opinions, newOpinion]);
+    const response = await CreateOpinion(newOpinion);
+    if (response.code === 201) {
+      fetchOpinionsData();
+      toast.success("Opinión añadida correctamente");
+    }
     setIsModalOpen(false);
     reset(); // Limpiar formulario
   };
-
+  useEffect(() => {
+    fetchOpinionsData();
+  }, []);
   // Mostrar estrellas según la puntuación
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, i) => (

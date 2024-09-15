@@ -21,7 +21,8 @@ const translateStatus = (status) => {
   };
   return statuses[status] || status.toUpperCase();
 };
-function handleState(status: string) {
+
+function handleState(status) {
   switch (status) {
     case "completed":
       return "bg-green-300 text-white";
@@ -31,6 +32,7 @@ function handleState(status: string) {
       return "bg-orange-300 text-white";
   }
 }
+
 const ReservationCard = ({ reservation, onMoreInfo }) => (
   <div className="p-6 mb-6 transition-shadow duration-300 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl">
     <img
@@ -46,6 +48,15 @@ const ReservationCard = ({ reservation, onMoreInfo }) => (
         <FiCalendar className="mr-2 text-rose-500" />
         <span>
           {new Date(reservation.appointment_date).toLocaleDateString()}
+        </span>
+      </div>
+      <div className="flex items-center mt-2 text-gray-700">
+        <FiClock className="mr-2 text-rose-500" />
+        <span>
+          {new Date(reservation.appointment_date).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
         </span>
       </div>
       <div className="flex items-center mt-2 text-gray-700">
@@ -99,6 +110,13 @@ const ReservationModal = ({ reservation, onClose }) => (
         {new Date(reservation.appointment_date).toLocaleDateString()}
       </p>
       <p>
+        <strong>Hora de la cita:</strong>{" "}
+        {new Date(reservation.appointment_date).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}
+      </p>
+      <p>
         <strong>Duración:</strong> {reservation.service.duration}
       </p>
       <p>
@@ -125,6 +143,7 @@ const Reservations = () => {
   useEffect(() => {
     fetchAppointmentsData();
   }, [fetchAppointmentsData]);
+
   const [selectedReservation, setSelectedReservation] = useState(null);
 
   const handleMoreInfo = (reservation) => {

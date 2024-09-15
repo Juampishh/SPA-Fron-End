@@ -16,9 +16,31 @@ export const Contact = () => {
   const onSubmit = (data) => {
     console.log(data);
     toast.success(
-      "Gracias por contactarnos. Nos pondremos en contacto contigo pronto."
+      "¡Gracias por contactarnos en SPA SENTIRSE BIEN! Nos pondremos en contacto contigo pronto."
     );
     reset(); // Limpiar el formulario después de enviar
+
+    // Redirigir a WhatsApp
+    const phoneNumber = "+543777382757";
+    const message = encodeURIComponent(
+      `*🌿 SPA SENTIRSE BIEN 🌿*\n\n¡Gracias por contactarnos!\n\n👤 *Nombre*: ${
+        data.name
+      }\n✉️ *Correo Electrónico*: ${data.email}\n📞 *Teléfono*: ${
+        data.phone || "No proporcionado"
+      }\n\n💬 *Mensaje*:\n${
+        data.message
+      }\n\nNos pondremos en contacto contigo lo antes posible. ¡Que tengas un excelente día!`
+    );
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+
+    // Crear un enlace y simular un clic para abrir en una nueva pestaña
+    const link = document.createElement("a");
+    link.href = whatsappUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer"; // Seguridad adicional
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -31,7 +53,7 @@ export const Contact = () => {
         <section className="py-12 bg-gray-100">
           <div className="container mx-auto">
             <h1 className="mb-8 text-5xl font-extrabold text-center text-gray-800">
-              Contacta con nosotros
+              Contacta con SPA SENTIRSE BIEN
             </h1>
             <form
               onSubmit={handleSubmit(onSubmit)}

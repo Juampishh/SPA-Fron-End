@@ -51,7 +51,6 @@ export const NavbarComponent = () => {
             src="./public/Logo.jpeg"
             alt="Logo"
           />
-          <span className="ml-4 text-xs">Sentirse Bien</span>
         </NavbarBrand>
 
         <NavbarList className="relative flex items-center lg:hidden">

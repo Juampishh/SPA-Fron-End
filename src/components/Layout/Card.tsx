@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { useUsuario } from "../../Context/usuarioContex";
 import { useAppointments } from "../../Hooks/Appointments";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const modalVariants = {
   hidden: {
@@ -103,7 +104,7 @@ export const CardComponent = ({
       appointmentDate.getHours() < workStart.getHours() ||
       appointmentDate.getHours() > workEnd.getHours()
     ) {
-      alert("La fecha seleccionada está fuera del horario laboral.");
+      toast.error("El horario de atención es de 9 AM a 11 PM");
       return;
     }
 
@@ -113,7 +114,7 @@ export const CardComponent = ({
       appointment_date: reservationDate,
     };
     await fetchCreateAppointment(formatedData);
-    navigate("/reservations");
+    closeReserveModal();
   };
 
   return (
