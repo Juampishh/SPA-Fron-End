@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3005/";
+const API_URL = "https://spa-api-psi.vercel.app/";
 
 type FetchHeaders = {
   "Content-Type": string;
