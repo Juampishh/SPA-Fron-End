@@ -35,7 +35,7 @@ export const Register = () => {
     try {
       await fetchRegister(data);
 
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       toast.error("Error al registrarse");
       console.log(error);
