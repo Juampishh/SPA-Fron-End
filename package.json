@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --skipLibCheck || echo 'TypeScript errors ignored' && vite build",
+    "build": "tsc vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
