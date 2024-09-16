@@ -111,6 +111,7 @@ export const CardComponent = ({
       user_id: usuario.id,
       appointment_date: reservationDate,
     };
+    if (!usuario.id) return toast.error("Debes iniciar sesión para reservar");
     await fetchCreateAppointment(formatedData);
     closeReserveModal();
   };
@@ -233,9 +234,6 @@ export const CardComponent = ({
                   </label>
                   <input
                     {...register("name", { required: true })}
-                    defaultValue={
-                      usuario ? usuario.firstName + " " + usuario.lastName : ""
-                    }
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-green-500"
                   />
                   {errors.name && (

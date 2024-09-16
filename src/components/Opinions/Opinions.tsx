@@ -8,11 +8,12 @@ import { motion } from "framer-motion";
 import { useOpinions } from "../../Hooks/Opinions";
 import { CreateOpinion } from "../../API/Opinions";
 import toast from "react-hot-toast";
+import Loader from "../Loaders/Loader";
 
 Modal.setAppElement("#root"); // Para la accesibilidad
 
 export const Opinions = () => {
-  const { opinions, fetchOpinionsData } = useOpinions();
+  const { opinions, fetchOpinionsData, loading } = useOpinions();
   const [visibleCount, setVisibleCount] = useState(6);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -81,7 +82,7 @@ export const Opinions = () => {
                 Añadir comentario
               </button>
             </div>
-
+            {loading && <Loader size={90} loading={true} />}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {opinions.slice(0, visibleCount).map((opinion, index) => (
                 <article
