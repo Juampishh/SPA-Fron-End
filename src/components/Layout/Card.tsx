@@ -215,14 +215,14 @@ export const CardComponent = ({
           animate="visible"
           exit="hidden"
           variants={modalVariants}
-          className="flex h-full"
+          className="flex flex-col h-full lg:flex-row"
         >
           <img
             src={validUrl}
             alt={title}
-            className="object-cover w-1/2 h-full rounded-l-lg"
+            className="object-cover w-full h-40 rounded-l-lg lg:w-1/2 lg:h-full"
           />
-          <div className="flex flex-col w-1/2 p-6 bg-white rounded-r-lg">
+          <div className="flex flex-col w-full p-6 overflow-y-auto bg-white rounded-r-lg lg:w-1/2">
             <h2 className="mb-6 text-4xl font-bold text-gray-900">
               Reserva para {title}
             </h2>
