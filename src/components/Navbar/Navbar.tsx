@@ -48,7 +48,7 @@ export const NavbarComponent = () => {
             onClick={() => {
               navigate("/");
             }}
-            src="./public/Logo.jpeg"
+            src="Logo.jpeg"
             alt="Logo"
           />
         </NavbarBrand>
