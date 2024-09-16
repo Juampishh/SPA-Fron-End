@@ -9,11 +9,7 @@ import { Service } from "./Types/Services";
 import Loader from "./components/Loaders/Loader";
 
 function Container() {
-  const images = [
-    "./public/Carousel/sp2.jpg",
-    "./public/Carousel/sp3.jpg",
-    "./public/Carousel/sp1.jpg",
-  ];
+  const images = ["Carousel/sp2.jpg", "Carousel/sp3.jpg", "Carousel/sp1.jpg"];
   const { services, loading } = useServices();
   const [filteredServices, setFilteredServices] = useState<Service[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
