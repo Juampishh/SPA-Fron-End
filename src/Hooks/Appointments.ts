@@ -47,12 +47,11 @@ export const useAppointments = () => {
     try {
       const response = await CreateAppointment(data);
       if (response.code === 201) {
-        toast.success(response.data.message);
+        toast.success("Reserva creada correctamente");
       } else {
-        toast.error(response.message);
+        toast.error("No se pudo crear la reserva");
       }
     } catch (error) {
-      toast.error("Error creating appointment");
       console.log(error);
     } finally {
       setLoading(false);

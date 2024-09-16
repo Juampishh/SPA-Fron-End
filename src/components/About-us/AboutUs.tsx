@@ -57,7 +57,7 @@ const AboutUs = () => {
               <img
                 src="/miembros/miembro-mujer.jpg"
                 alt="foto-miembro"
-                className="object-cover w-full h-40 rounded-t-lg aspect-w-3 aspect-h-2"
+                className="object-cover w-full h-48 rounded-t-lg"
               />
               <h3 className="mt-4 text-lg font-semibold md:text-xl">
                 Valeria Martínez
@@ -67,15 +67,15 @@ const AboutUs = () => {
               </p>
               <p className="mt-2 text-sm md:text-base">
                 Valeria ofrece tratamientos faciales y corporales personalizados
-                para rejuvenecer y mejorar la textura de la piel. Su experiencia
-                incluye peelings químicos y reducción de celulitis.
+                para rejuvenecer y mejorar la textura de la piel...
               </p>
             </div>
+
             <div className="p-6 bg-white rounded-lg shadow-lg">
               <img
                 src="/miembros/miembro-mujer2.jpg"
                 alt="foto-miembro"
-                className="object-cover w-full h-40 rounded-t-lg aspect-w-3 aspect-h-2"
+                className="object-cover w-full h-48 rounded-t-lg"
               />
               <h3 className="mt-4 text-lg font-semibold md:text-xl">
                 Ana García
@@ -85,16 +85,15 @@ const AboutUs = () => {
               </p>
               <p className="mt-2 text-sm md:text-base">
                 Ana se especializa en maquillaje para eventos, tratamientos de
-                belleza y cuidado de la piel. Realza la belleza natural con
-                servicios como depilación, diseño de cejas y tintura de
-                pestañas.
+                belleza y cuidado de la piel...
               </p>
             </div>
+
             <div className="p-6 bg-white rounded-lg shadow-lg">
               <img
                 src="/miembros/miembro-hombre.jpeg"
                 alt="foto-miembro"
-                className="object-cover w-full h-40 rounded-t-lg aspect-w-3 aspect-h-2"
+                className="object-cover w-full h-48 rounded-t-lg"
               />
               <h3 className="mt-4 text-lg font-semibold md:text-xl">
                 Carlos Suárez
@@ -102,8 +101,7 @@ const AboutUs = () => {
               <p className="text-gray-600">Masajista Terapéutica</p>
               <p className="mt-2 text-sm md:text-base">
                 Carlos ofrece masajes relajantes y terapéuticos para aliviar
-                tensiones y mejorar el bienestar general. Su enfoque
-                personalizado combina técnicas de masoterapia y aromaterapia.
+                tensiones y mejorar el bienestar general...
               </p>
             </div>
           </div>

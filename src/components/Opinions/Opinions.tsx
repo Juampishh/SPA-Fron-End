@@ -69,7 +69,7 @@ export const Opinions = () => {
       <main className="flex-grow">
         <section className="py-12 bg-gray-100">
           <div className="container mx-auto">
-            <h1 className="mb-8 text-5xl font-extrabold text-center text-gray-800">
+            <h1 className="mb-8 text-2xl font-extrabold text-center text-gray-800 md:text-5xl">
               Opiniones de nuestros clientes
             </h1>
 

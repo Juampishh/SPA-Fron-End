@@ -52,11 +52,13 @@ export const Register = () => {
       <img
         src="/Logo-removebg-preview.png"
         alt="Logo"
-        className="absolute z-10 w-40 transform -translate-x-1/2 top-9 left-1/2"
+        className="absolute z-10 hidden w-40 transform -translate-x-1/2 top-9 left-1/2 md:block"
       />
-      <h1 className="z-10 mb-6 text-3xl font-bold text-center text-gray-900">
+
+      <h1 className="z-10 hidden mb-6 text-3xl font-bold text-center text-gray-900 md:block">
         SPA Sentirse Bien
       </h1>
+
       <div className="relative z-10 w-full max-w-md p-8 bg-white rounded-lg shadow-md">
         <h2 className="mb-6 text-2xl font-bold text-center text-gray-900">
           Registrarse
@@ -151,7 +153,7 @@ export const Register = () => {
         </form>
         <button
           onClick={() => {
-            navigate("/");
+            navigate("/login");
           }}
           className="w-full px-4 py-2 mt-4 text-sm text-blue-500 transition duration-200 ease-in-out rounded-md text-blue hover:text-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >

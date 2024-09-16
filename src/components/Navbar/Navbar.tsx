@@ -148,7 +148,7 @@ export const NavbarComponent = () => {
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
-              className="absolute z-50 w-full bg-white shadow-lg lg:hidden"
+              className="absolute z-50 w-full bg-white shadow-lg mt-9 lg:hidden"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -184,7 +184,10 @@ export const NavbarComponent = () => {
                 </NavbarItem>
                 <NavbarItem
                   className="hover:text-Verde"
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    navigate("/contact");
+                    setMobileMenuOpen(false);
+                  }}
                 >
                   Contacto
                 </NavbarItem>
@@ -199,9 +202,21 @@ export const NavbarComponent = () => {
                 </NavbarItem>
                 <NavbarItem
                   className="hover:text-Verde"
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    navigate("/opinions");
+                    setMobileMenuOpen(false);
+                  }}
                 >
                   Opiniones
+                </NavbarItem>
+                <NavbarItem
+                  className="hover:text-Verde"
+                  onClick={() => {
+                    navigate("/notices");
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  Noticias
                 </NavbarItem>
               </NavbarList>
             </motion.div>
