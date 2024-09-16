@@ -25,11 +25,8 @@ export const NavbarComponent = () => {
   const userButtonRef = useRef<HTMLLIElement>(null);
   const Logout = () => {
     localStorage.removeItem("usuario");
-    window.location.reload();
+    navigate("/");
     toast.success("Sesión cerrada");
-    setTimeout(() => {
-      navigate("/");
-    }, 1000);
   };
 
   const scrollToSection = (id: string) => {
