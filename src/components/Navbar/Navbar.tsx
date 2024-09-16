@@ -27,6 +27,9 @@ export const NavbarComponent = () => {
     localStorage.removeItem("usuario");
     navigate("/");
     toast.success("Sesión cerrada");
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   const scrollToSection = (id: string) => {
