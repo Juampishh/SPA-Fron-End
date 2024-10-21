@@ -300,19 +300,18 @@ export const NavbarComponent = () => {
                 Informes
               </div>
             )}
-            {usuario.type === "secretariat" ||
-              (usuario.type === "admin" && (
-                <div
-                  className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
-                  onClick={() => {
-                    navigate("/payments");
-                    setMenuOpen(false);
-                  }}
-                >
-                  <FaMoneyBillWave className="w-5 h-5 mr-2" />
-                  Pagos
-                </div>
-              ))}
+            {(usuario.type === "secretariat" || usuario.type === "admin") && (
+              <div
+                className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
+                onClick={() => {
+                  navigate("/payments");
+                  setMenuOpen(false);
+                }}
+              >
+                <FaMoneyBillWave className="w-5 h-5 mr-2" />
+                Pagos
+              </div>
+            )}
             <div
               className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
               onClick={Logout}
