@@ -8,7 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from "keep-react";
-import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import {
+  FaStar,
+  FaStarHalfAlt,
+  FaRegStar,
+  FaCheckCircle,
+} from "react-icons/fa";
 import { CardComponentProps } from "../../Types/CardComponentsProps";
 import { motion } from "framer-motion";
 import { FieldValues, useForm } from "react-hook-form";
@@ -80,6 +85,9 @@ export const CardComponent = ({
     formState: { errors },
   } = useForm();
   const { usuario } = useUsuario();
+  const [isCreditCardModalOpen, setIsCreditCardModalOpen] = useState(false);
+  const [showCreditCardForm, setShowCreditCardForm] = useState(false);
+
   const openInfoModal = () => setIsInfoModalOpen(true);
   const closeInfoModal = () => setIsInfoModalOpen(false);
   const openReserveModal = () => setIsReserveModalOpen(true);
@@ -88,7 +96,7 @@ export const CardComponent = ({
 
   const onSubmit = async (data: FieldValues) => {
     const { reservationDate } = data;
-
+    console.log(data);
     // Definir el horario laboral
     const workStart = new Date();
     workStart.setHours(9, 0, 0, 0); // 9 AM
@@ -110,12 +118,31 @@ export const CardComponent = ({
       service_id: id,
       user_id: usuario.id,
       appointment_date: reservationDate,
+      payment_method: data.payment_method,
     };
     if (!usuario.id) return toast.error("Debes iniciar sesión para reservar");
     await fetchCreateAppointment(formatedData);
     closeReserveModal();
+    setIsCreditCardModalOpen(true);
+    setTimeout(() => setShowCreditCardForm(true), 1000);
   };
+  const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
+  const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
+  const handlePaymentSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    setIsPaymentProcessing(true);
+    setShowCreditCardForm(false);
 
+    setTimeout(() => {
+      setIsPaymentProcessing(false);
+      setIsPaymentSuccessful(true);
+
+      setTimeout(() => {
+        setIsCreditCardModalOpen(false);
+        setIsPaymentSuccessful(false);
+      }, 2000);
+    }, 3000);
+  };
   return (
     <>
       <Card className="flex flex-col transition-shadow duration-300 border border-gray-200 rounded-lg shadow-md hover:shadow-lg w-80">
@@ -287,6 +314,23 @@ export const CardComponent = ({
                     </span>
                   )}
                 </div>
+                <div>
+                  <label className="block text-base font-medium text-gray-700">
+                    Método de pago
+                  </label>
+                  <select
+                    {...register("payment_method", { required: true })}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-green-500"
+                  >
+                    <option value="tarjetaCredito">Tarjeta de Crédito</option>
+                    <option value="tarjetaDebito">Tarjeta de Débito</option>
+                  </select>
+                  {errors.paymentMethod && (
+                    <span className="text-sm text-red-500">
+                      Este campo es obligatorio
+                    </span>
+                  )}
+                </div>
               </div>
               <Button
                 type="submit"
@@ -298,6 +342,103 @@ export const CardComponent = ({
               </Button>
             </form>
           </div>
+        </motion.div>
+      </Modal>
+      <Modal
+        isOpen={isCreditCardModalOpen}
+        onRequestClose={() => {
+          setIsCreditCardModalOpen(false);
+          setShowCreditCardForm(false);
+          setIsPaymentSuccessful(false); // Reset success state
+        }}
+        style={modalStyles}
+        contentLabel="Carga de Tarjeta de Crédito"
+      >
+        <button
+          onClick={() => {
+            setIsCreditCardModalOpen(false);
+            setShowCreditCardForm(false);
+            setIsPaymentSuccessful(false); // Reset success state
+          }}
+          className="absolute text-2xl text-gray-700 top-4 right-4 hover:text-gray-900"
+        >
+          &times;
+        </button>
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          variants={modalVariants}
+          className="flex flex-col items-center justify-center h-full p-6 bg-white rounded-lg shadow-lg"
+        >
+          {isPaymentProcessing ? (
+            <div className="flex flex-col items-center">
+              <div className="w-12 h-12 border-t-4 border-b-4 border-green-500 rounded-full loader animate-spin"></div>
+              <p className="mt-4 text-lg text-gray-600">Procesando Pago...</p>
+            </div>
+          ) : isPaymentSuccessful ? (
+            <div className="flex flex-col items-center">
+              <FaCheckCircle className="text-6xl text-green-500" />
+              <p className="mt-4 text-2xl font-semibold text-gray-800">
+                Pago Aceptado
+              </p>
+            </div>
+          ) : (
+            <form
+              onSubmit={handlePaymentSubmit}
+              className="w-full max-w-md space-y-4"
+            >
+              <h2 className="mb-4 text-3xl font-semibold text-center text-gray-800">
+                Ingrese los Datos de su Tarjeta
+              </h2>
+              <div className="relative">
+                <label className="block text-base font-medium text-gray-700">
+                  Número de Tarjeta
+                </label>
+                <input
+                  type="text"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-green-500"
+                  placeholder="1234 5678 9012 3456"
+                  pattern="\d{4} \d{4} \d{4} \d{4}" // Regex for basic credit card format
+                  required
+                />
+              </div>
+              <div className="flex space-x-4">
+                <div className="relative w-1/2">
+                  <label className="block text-base font-medium text-gray-700">
+                    Expiración
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-green-500"
+                    placeholder="MM/YY"
+                    pattern="(0[1-9]|1[0-2])\/\d{2}"
+                    required
+                  />
+                </div>
+                <div className="relative w-1/2">
+                  <label className="block text-base font-medium text-gray-700">
+                    CVV
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-green-500"
+                    placeholder="123"
+                    pattern="\d{3}" // Regex for 3-digit CVV
+                    required
+                  />
+                </div>
+              </div>
+              <Button
+                type="submit"
+                size="lg"
+                color="primary"
+                className="w-full px-4 py-2 mt-4 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+              >
+                Confirmar Pago
+              </Button>
+            </form>
+          )}
         </motion.div>
       </Modal>
     </>

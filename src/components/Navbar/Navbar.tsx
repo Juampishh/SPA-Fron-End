@@ -11,10 +11,11 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { CiUser } from "react-icons/ci";
 import { FiLogOut } from "react-icons/fi";
-import { FaSignInAlt } from "react-icons/fa";
+import { FaInfo, FaMoneyBillWave, FaSignInAlt } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { HiOutlineMenu } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
+import { FaCalendarAlt } from "react-icons/fa";
 
 export const NavbarComponent = () => {
   const { usuario } = useUsuario();
@@ -250,7 +251,7 @@ export const NavbarComponent = () => {
               <CiUser className="w-5 h-5 mr-2" />
               Perfil
             </div>
-            {usuario.type === "admin" ? (
+            {usuario.type !== "client" && usuario.type !== "secretariat" ? (
               <div
                 className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
                 onClick={() => {
@@ -258,10 +259,10 @@ export const NavbarComponent = () => {
                   setMenuOpen(false);
                 }}
               >
-                <CiUser className="w-5 h-5 mr-2" />
+                <FaCalendarAlt className="w-5 h-5 mr-2" />
                 Reservas
               </div>
-            ) : (
+            ) : usuario.type === "client" ? (
               <div
                 className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
                 onClick={() => {
@@ -269,11 +270,49 @@ export const NavbarComponent = () => {
                   setMenuOpen(false);
                 }}
               >
-                <CiUser className="w-5 h-5 mr-2" />
+                <FaCalendarAlt className="w-5 h-5 mr-2" />
                 Reservas
               </div>
+            ) : (
+              <></>
             )}
-
+            {usuario.type === "admin" && (
+              <div
+                className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
+                onClick={() => {
+                  navigate("/create-employee");
+                  setMenuOpen(false);
+                }}
+              >
+                <CiUser className="w-5 h-5 mr-2" />
+                Crear empleado
+              </div>
+            )}
+            {usuario.type === "admin" && (
+              <div
+                className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
+                onClick={() => {
+                  navigate("/information");
+                  setMenuOpen(false);
+                }}
+              >
+                <FaInfo className="w-5 h-5 mr-2" />
+                Informes
+              </div>
+            )}
+            {usuario.type === "secretariat" ||
+              (usuario.type === "admin" && (
+                <div
+                  className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
+                  onClick={() => {
+                    navigate("/payments");
+                    setMenuOpen(false);
+                  }}
+                >
+                  <FaMoneyBillWave className="w-5 h-5 mr-2" />
+                  Pagos
+                </div>
+              ))}
             <div
               className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
               onClick={Logout}

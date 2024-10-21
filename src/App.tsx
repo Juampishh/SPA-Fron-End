@@ -14,6 +14,9 @@ import ReservationsAdmin from "./components/Reservations/Admin-reservations";
 import AboutUs from "./components/About-us/AboutUs";
 import { Opinions } from "./components/Opinions/Opinions";
 import { Contact } from "./components/Contact/Contact";
+import EmployeeForm from "./components/Employee/Employee";
+import Payments from "./components/Payments/Payments";
+import Information from "./components/Information/Information";
 export default () => (
   <UsuarioProvider>
     <App></App>
@@ -34,11 +37,20 @@ function App() {
               />
             }
           >
-            {usuario.type === "admin" && (
+            {usuario.type !== "client" && (
               <Route
                 path="/admin-reservations"
                 element={<ReservationsAdmin />}
               />
+            )}
+            {usuario.type === "admin" && (
+              <Route path="/create-employee" element={<EmployeeForm />} />
+            )}
+            {usuario.type === "admin" && (
+              <Route path="/information" element={<Information />} />
+            )}
+            {(usuario.type === "secretariat" || usuario.type === "admin") && (
+              <Route path="/payments" element={<Payments />} />
             )}
             <Route path="/edit-profile" element={<EditProfile />} />
             <Route path="/reservations" element={<Reservations />} />

@@ -13,6 +13,7 @@ import {
 } from "react-icons/fi";
 import { motion } from "framer-motion";
 import Loader from "../Loaders/Loader";
+import { useUsuario } from "../../Context/usuarioContex";
 
 // Definir tipos para las reservas
 interface Reservation {
@@ -25,6 +26,8 @@ interface Reservation {
   rating: number;
   description: string;
   status: "pending" | "completed" | "expired";
+  firstName: string; // Añadido
+  lastName: string; // Añadido
 }
 
 interface ReservationCardAdminProps {
@@ -59,111 +62,134 @@ const ReservationCardAdmin = ({
   onMoreInfo,
   onEdit,
   onDelete,
-}: ReservationCardAdminProps) => (
-  <div className="p-6 mb-6 transition-shadow duration-300 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl">
-    <img
-      src={`servicios/${reservation.image_url}`}
-      alt={reservation.service_name}
-      className="object-cover w-full h-40 rounded-t-lg"
-    />
-    <div className="p-4">
-      <h3 className="text-2xl font-semibold text-rose-700">
-        {reservation.service_name}
-      </h3>
-      <div className="flex items-center mt-2 text-gray-700">
-        <FiCalendar className="mr-2 text-rose-500" />
-        <span>
-          {new Date(reservation.appointment_date).toLocaleDateString()}
-        </span>
-      </div>
-      <div className="flex items-center mt-2 text-gray-700">
-        <FiClock className="mr-2 text-rose-500" />
-        <span>{reservation.duration}</span>
-      </div>
-      <div className="flex items-center mt-2 text-gray-700">
-        <FiDollarSign className="mr-2 text-rose-500" />
-        <span>{reservation.cost}</span>
-      </div>
-      <div className="flex items-center mt-2 text-gray-700">
-        <FiStar className="mr-2 text-rose-500" />
-        <span>{reservation.rating}</span>
-      </div>
-      <p className="mt-4 text-gray-600">{reservation.description}</p>
-      <div className="flex flex-col gap-2 mt-4">
-        <span
-          className={`px-2 py-1 text-sm font-semibold rounded w-1/3 text-center ${handleState(
-            reservation.status
-          )}`}
-        >
-          {translateStatus(reservation.status)}
-        </span>
-        <div className="flex gap-2">
-          <button
-            onClick={() => onEdit(reservation)}
-            className="flex items-center px-4 py-1 text-sm font-medium text-left text-white transition duration-300 bg-blue-500 rounded-lg hover:bg-blue-700"
+}: ReservationCardAdminProps) => {
+  const { usuario } = useUsuario(); // Obtener el usuario actual
+
+  return (
+    <div className="p-6 mb-6 transition-shadow duration-300 bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl">
+      <img
+        src={`servicios/${reservation.image_url}`}
+        alt={reservation.service_name}
+        className="object-cover w-full h-40 rounded-t-lg"
+      />
+      <div className="p-4">
+        <h3 className="text-2xl font-semibold text-rose-700">
+          {reservation.service_name}
+        </h3>
+        <div className="flex items-center mt-2 text-gray-700">
+          <FiCalendar className="mr-2 text-rose-500" />
+          <span>
+            {new Date(reservation.appointment_date).toLocaleDateString()}
+          </span>
+        </div>
+        <div className="flex items-center mt-2 text-gray-700">
+          <FiClock className="mr-2 text-rose-500" />
+          <span>{reservation.duration}</span>
+        </div>
+        <div className="flex items-center mt-2 text-gray-700">
+          <FiDollarSign className="mr-2 text-rose-500" />
+          <span>{reservation.cost}</span>
+        </div>
+        <div className="flex items-center mt-2 text-gray-700">
+          <FiStar className="mr-2 text-rose-500" />
+          <span>{reservation.rating}</span>
+        </div>
+        <p className="mt-4 text-gray-600">{reservation.description}</p>
+        <div className="flex flex-col gap-2 mt-4">
+          <span
+            className={`px-2 py-1 text-sm font-semibold rounded w-1/3 text-center ${handleState(
+              reservation.status
+            )}`}
           >
-            <FiEdit className="mr-2" /> Editar
-          </button>
-          <button
-            onClick={() => onDelete(reservation.id)}
-            className="flex items-center px-4 py-1 text-sm font-medium text-left text-white transition duration-300 bg-red-500 rounded-lg hover:bg-red-700"
-          >
-            <FiTrash2 className="mr-2" /> Eliminar
-          </button>
-          <button
-            onClick={() => onMoreInfo(reservation)}
-            className="flex items-center px-4 py-1 text-sm font-medium text-left text-white transition duration-300 rounded-lg bg-rose-500 hover:bg-rose-700"
-          >
-            <FiInfo className="mr-2" /> Más información
-          </button>
+            {translateStatus(reservation.status)}
+          </span>
+          <div className="flex gap-2">
+            {usuario.type === "admin" && (
+              <>
+                <button
+                  onClick={() => onEdit(reservation)}
+                  className="flex items-center px-4 py-1 text-sm font-medium text-left text-white transition duration-300 bg-blue-500 rounded-lg hover:bg-blue-700"
+                >
+                  <FiEdit className="mr-2" /> Editar
+                </button>
+                <button
+                  onClick={() => onDelete(reservation.id)}
+                  className="flex items-center px-4 py-1 text-sm font-medium text-left text-white transition duration-300 bg-red-500 rounded-lg hover:bg-red-700"
+                >
+                  <FiTrash2 className="mr-2" /> Eliminar
+                </button>
+              </>
+            )}
+            <button
+              onClick={() => onMoreInfo(reservation)}
+              className="flex items-center px-4 py-1 text-sm font-medium text-left text-white transition duration-300 rounded-lg bg-rose-500 hover:bg-rose-700"
+            >
+              <FiInfo className="mr-2" /> Más información
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 interface ReservationModalProps {
   reservation: Reservation;
   onClose: () => void;
 }
 
-const ReservationModal = ({ reservation, onClose }: ReservationModalProps) => (
-  <motion.div
-    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-  >
-    <div className="p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="mb-4 text-2xl font-bold text-center text-rose-700">
-        Información de la Reserva
-      </h2>
-      <p>
-        <strong>Servicio:</strong> {reservation.service_name}
-      </p>
-      <p>
-        <strong>Fecha de la cita:</strong>{" "}
-        {new Date(reservation.appointment_date).toLocaleDateString()}
-      </p>
-      <p>
-        <strong>Duración:</strong> {reservation.duration}
-      </p>
-      <p>
-        <strong>Costo:</strong> {"$" + reservation.cost}
-      </p>
-      <p>
-        <strong>Vigencia de la reserva:</strong>{" "}
-        {reservation.appointment_date.split("T")[0]}
-      </p>
-      <button
-        onClick={onClose}
-        className="px-4 py-2 mt-4 text-white rounded-lg bg-rose-500 hover:bg-rose-700"
-      >
-        Cerrar
-      </button>
-    </div>
-  </motion.div>
-);
+const ReservationModal = ({ reservation, onClose }: ReservationModalProps) => {
+  const appointmentDate = new Date(reservation.appointment_date);
+  const formattedDate = appointmentDate.toLocaleDateString();
+  const formattedTime = appointmentDate.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  return (
+    <motion.div
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <div className="p-6 bg-white rounded-lg shadow-lg">
+        <h2 className="mb-4 text-2xl font-bold text-center text-rose-700">
+          Información de la Reserva
+        </h2>
+        <p>
+          <strong>Cliente:</strong> {reservation.firstName}{" "}
+          {reservation.lastName}
+        </p>
+        <p>
+          <strong>Servicio:</strong> {reservation.service_name}
+        </p>
+        <p>
+          <strong>Fecha de la cita:</strong> {formattedDate}
+        </p>
+        <p>
+          <strong>Hora de la cita:</strong> {formattedTime}
+        </p>
+        <p>
+          <strong>Duración:</strong> {reservation.duration}
+        </p>
+        <p>
+          <strong>Costo:</strong> {"$" + reservation.cost}
+        </p>
+        <p>
+          <strong>Vigencia de la reserva:</strong>{" "}
+          {reservation.appointment_date.split("T")[0]}
+        </p>
+        <button
+          onClick={onClose}
+          className="px-4 py-2 mt-4 text-white rounded-lg bg-rose-500 hover:bg-rose-700"
+        >
+          Cerrar
+        </button>
+      </div>
+    </motion.div>
+  );
+};
 
 const ReservationsAdmin = () => {
   const {
@@ -173,7 +199,7 @@ const ReservationsAdmin = () => {
   } = useAppointments();
   const [selectedReservation, setSelectedReservation] =
     useState<Reservation | null>(null);
-
+  const { usuario } = useUsuario();
   useEffect(() => {
     fetchAppointmentsData();
   }, [fetchAppointmentsData]);
@@ -189,6 +215,8 @@ const ReservationsAdmin = () => {
       rating: appointment.rating,
       description: appointment.description,
       status: appointment.status,
+      firstName: appointment.firstName, // Añadido
+      lastName: appointment.lastName, // Añadido
     })
   );
 

@@ -21,9 +21,10 @@ export const useAppointments = () => {
     setLoading(true);
     try {
       let response;
-      if (usuario.type === "admin") {
+      if (usuario.type !== "client") {
         // Fetch all appointments if the user is an admin
         response = await GetAllAppointments(id);
+        console.log(response);
       } else {
         // Fetch appointments for the specific user if not an admin
         response = await GetAppointments(id);
