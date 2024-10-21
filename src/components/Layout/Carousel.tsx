@@ -27,7 +27,7 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
   };
 
   return (
-    <div className="relative w-screen overflow-hidden h-[75vh] bg-black">
+    <div className="relative w-full overflow-hidden h-[75vh] bg-black">
       <div className="relative w-full h-full">
         <AnimatePresence>
           <motion.div
