@@ -455,33 +455,55 @@ const Home: React.FC = () => {
         <hr className="my-8 border-t-2 border-gray-300" />
 
         {(usuario.type === "masseuse" || usuario.type === "beautician") && (
-          <div className="p-6 bg-gray-100 rounded-lg shadow-md">
-            <h3 className="mb-4 text-2xl font-semibold">
-              Opciones de{" "}
-              {usuario.type === "masseuse" ? "Masajista" : "Esteticista"}
-            </h3>
-            <div className="mt-4">
-              <label
-                htmlFor="serviceSelect"
-                className="block mb-2 text-sm font-medium text-gray-700"
-              >
-                Seleccionar servicio para generar listado:
-              </label>
-              <select
-                id="serviceSelect"
-                value={selectedService}
-                onChange={(e) => setSelectedService(e.target.value)}
-                className="block w-1/2 px-2 py-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              >
-                {usuario.type === "masseuse" && (
-                  <option value="masajes">Tratamientos Corporales</option>
-                )}
-                {usuario.type === "beautician" && (
-                  <option value="faciales">Tratamientos Faciales</option>
-                )}
-              </select>
+          <>
+            <div className="p-6 bg-gray-100 rounded-lg shadow-md">
+              <h3 className="mb-4 text-2xl font-semibold">
+                Opciones de{" "}
+                {usuario.type === "masseuse" ? "Masajista" : "Esteticista"}
+              </h3>
+              <div className="mt-4">
+                <label
+                  htmlFor="serviceSelect"
+                  className="block mb-2 text-sm font-medium text-gray-700"
+                >
+                  Seleccionar servicio para generar listado:
+                </label>
+                <select
+                  id="serviceSelect"
+                  value={selectedService}
+                  onChange={(e) => setSelectedService(e.target.value)}
+                  className="block w-1/2 px-2 py-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                >
+                  {usuario.type === "masseuse" && (
+                    <option value="masajes">Tratamientos Corporales</option>
+                  )}
+                  {usuario.type === "beautician" && (
+                    <option value="faciales">Tratamientos Faciales</option>
+                  )}
+                </select>
+              </div>
             </div>
-          </div>
+            <div className="flex mt-4 space-x-4">
+              <button
+                onClick={() => handleButtonClick("Reporte Semanal")}
+                className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none"
+              >
+                Descargar Reporte Semanal
+              </button>
+              <button
+                onClick={() => handleButtonClick("Reporte Mensual")}
+                className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none"
+              >
+                Descargar Reporte Mensual
+              </button>
+              <button
+                onClick={() => handleButtonClick("Reporte Anual")}
+                className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none"
+              >
+                Descargar Reporte Anual
+              </button>
+            </div>
+          </>
         )}
 
         {usuario.type === "admin" && (
