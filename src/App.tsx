@@ -17,6 +17,7 @@ import { Contact } from "./components/Contact/Contact";
 import EmployeeForm from "./components/Employee/Employee";
 import Payments from "./components/Payments/Payments";
 import Information from "./components/Information/Information";
+import Home from "./components/Home/Home";
 export default () => (
   <UsuarioProvider>
     <App></App>
@@ -42,6 +43,9 @@ function App() {
                 path="/admin-reservations"
                 element={<ReservationsAdmin />}
               />
+            )}
+            {usuario.type !== "client" && (
+              <Route path="/home" element={<Home />} />
             )}
             {usuario.type === "admin" && (
               <Route path="/create-employee" element={<EmployeeForm />} />

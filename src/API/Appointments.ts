@@ -8,10 +8,13 @@ export const GetAppointments = async (id: number) => {
   return response;
 };
 
-export const GetAllAppointments = async (id: number) => {
+export const GetAllAppointments = async (id: number, userType: string) => {
   const response = await FetchApi({
     path: `appointments/all/${id}`,
     method: "GET",
+    payload: {
+      userType: userType,
+    },
   });
   return response;
 };

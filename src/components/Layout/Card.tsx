@@ -95,13 +95,13 @@ export const CardComponent = ({
   const { fetchCreateAppointment } = useAppointments();
 
   const onSubmit = async (data: FieldValues) => {
-    const { reservationDate } = data;
+    const { reservationDate, payment_method } = data;
     console.log(data);
     // Definir el horario laboral
     const workStart = new Date();
     workStart.setHours(9, 0, 0, 0); // 9 AM
     const workEnd = new Date();
-    workEnd.setHours(23, 0, 0, 0); // 8 PM
+    workEnd.setHours(23, 0, 0, 0); // 11 PM
 
     const appointmentDate = new Date(reservationDate);
 
@@ -118,14 +118,19 @@ export const CardComponent = ({
       service_id: id,
       user_id: usuario.id,
       appointment_date: reservationDate,
-      payment_method: data.payment_method,
+      payment_method,
     };
     if (!usuario.id) return toast.error("Debes iniciar sesión para reservar");
     await fetchCreateAppointment(formatedData);
     closeReserveModal();
-    setIsCreditCardModalOpen(true);
-    setTimeout(() => setShowCreditCardForm(true), 1000);
+
+    // Only open credit card modal if payment method is not "Efectivo"
+    if (payment_method !== "efectivo") {
+      setIsCreditCardModalOpen(true);
+      setTimeout(() => setShowCreditCardForm(true), 1000);
+    }
   };
+
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
   const handlePaymentSubmit = (event: React.FormEvent) => {
@@ -143,6 +148,7 @@ export const CardComponent = ({
       }, 2000);
     }, 3000);
   };
+
   return (
     <>
       <Card className="flex flex-col transition-shadow duration-300 border border-gray-200 rounded-lg shadow-md hover:shadow-lg w-80">
@@ -324,6 +330,7 @@ export const CardComponent = ({
                   >
                     <option value="tarjetaCredito">Tarjeta de Crédito</option>
                     <option value="tarjetaDebito">Tarjeta de Débito</option>
+                    <option value="efectivo">Efectivo</option>
                   </select>
                   {errors.paymentMethod && (
                     <span className="text-sm text-red-500">

@@ -7,6 +7,8 @@ import { CardComponent } from "./components/Layout/Card";
 import CategoryFilter from "./components/Layout/Filter";
 import { Service } from "./Types/Services";
 import Loader from "./components/Loaders/Loader";
+import { useUsuario } from "./Context/usuarioContex";
+import { useNavigate } from "react-router-dom";
 
 function Container() {
   const images = ["Carousel/sp2.jpg", "Carousel/sp3.jpg", "Carousel/sp1.jpg"];
@@ -14,7 +16,8 @@ function Container() {
   const [filteredServices, setFilteredServices] = useState<Service[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [categories, setCategories] = useState<string[]>([]);
-
+  const { usuario } = useUsuario();
+  const navigate = useNavigate();
   useEffect(() => {
     if (services) {
       const uniqueCategories = Array.from(

@@ -11,11 +11,17 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { CiUser } from "react-icons/ci";
 import { FiLogOut } from "react-icons/fi";
-import { FaInfo, FaMoneyBillWave, FaSignInAlt } from "react-icons/fa";
+import {
+  FaInfo,
+  FaMobileAlt,
+  FaMoneyBillWave,
+  FaSignInAlt,
+} from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { HiOutlineMenu } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCalendarAlt } from "react-icons/fa";
+import { FaBars } from "react-icons/fa6";
 
 export const NavbarComponent = () => {
   const { usuario } = useUsuario();
@@ -251,6 +257,18 @@ export const NavbarComponent = () => {
               <CiUser className="w-5 h-5 mr-2" />
               Perfil
             </div>
+            {usuario.type !== "client" && (
+              <div
+                className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
+                onClick={() => {
+                  navigate("/home");
+                  setMenuOpen(false);
+                }}
+              >
+                <FaBars className="w-5 h-5 mr-2" />
+                Menu
+              </div>
+            )}
             {usuario.type !== "client" && usuario.type !== "secretariat" ? (
               <div
                 className="flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-100"
