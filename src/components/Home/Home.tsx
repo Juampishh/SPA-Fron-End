@@ -213,14 +213,15 @@ const Home: React.FC = () => {
   };
 
   const handleCheckClick = async (appointmentId: string) => {
-    console.log(`Appointment ID clicked: ${appointmentId}`);
-    console.log(appointments);
-    await fetch(
+    let response = await fetch(
       `https://spa-api-psi.vercel.app/appointments/complete/${appointmentId}`,
       {
         method: "PUT",
       }
     );
+    if (response.ok) {
+      toast.success("Cita marcada como pagada");
+    }
     fetchAppointmentsData();
   };
 
