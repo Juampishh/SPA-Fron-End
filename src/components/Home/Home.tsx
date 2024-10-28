@@ -5,6 +5,16 @@ import {
   FaArrowLeft,
   FaChevronLeft,
   FaChevronRight,
+  FaUserPlus,
+  FaHome,
+  FaUser,
+  FaConciergeBell,
+  FaInfoCircle,
+  FaEnvelope,
+  FaNewspaper,
+  FaComments,
+  FaSignOutAlt,
+  FaCheck, // Import the checkmark icon
 } from "react-icons/fa";
 import { useUsuario } from "../../Context/usuarioContex";
 import { useNavigate } from "react-router-dom";
@@ -18,13 +28,14 @@ const appItems = [
 ];
 
 const navigationItems = [
-  { name: "Inicio", path: "/" },
-  { name: "Perfil", path: "/edit-profile" },
-  { name: "Servicios", path: "/services" },
-  { name: "Sobre nosotros", path: "/about-us" },
-  { name: "Contacto", path: "/contact" },
-  { name: "Noticias", path: "/notices" },
-  { name: "Opiniones", path: "/opinions" },
+  { name: "Inicio", path: "/", icon: <FaHome /> },
+  { name: "Perfil", path: "/edit-profile", icon: <FaUser /> },
+  { name: "Crear empleado", path: "/create-employee", icon: <FaUserPlus /> },
+  { name: "Servicios", path: "/services", icon: <FaConciergeBell /> },
+  { name: "Sobre nosotros", path: "/about-us", icon: <FaInfoCircle /> },
+  { name: "Contacto", path: "/contact", icon: <FaEnvelope /> },
+  { name: "Noticias", path: "/notices", icon: <FaNewspaper /> },
+  { name: "Opiniones", path: "/opinions", icon: <FaComments /> },
 ];
 
 const Home: React.FC = () => {
@@ -39,8 +50,6 @@ const Home: React.FC = () => {
   useEffect(() => {
     fetchAppointmentsData();
   }, [fetchAppointmentsData]);
-
-  console.log(appointments);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -203,10 +212,22 @@ const Home: React.FC = () => {
     }, 1000);
   };
 
+  const handleCheckClick = async (appointmentId: string) => {
+    console.log(`Appointment ID clicked: ${appointmentId}`);
+    console.log(appointments);
+    await fetch(
+      `https://spa-api-psi.vercel.app/appointments/complete/${appointmentId}`,
+      {
+        method: "PUT",
+      }
+    );
+    fetchAppointmentsData();
+  };
+
   return (
     <div className="flex h-screen">
       <motion.div
-        className={`bg-gray-800 text-white p-5 fixed h-full ${
+        className={`bg-Rosa text-AntiFlashWhite p-5 fixed h-full ${
           isSidebarOpen ? "w-64" : "w-16"
         }`}
         initial={{ width: 0 }}
@@ -215,32 +236,34 @@ const Home: React.FC = () => {
       >
         <button
           onClick={toggleSidebar}
-          className="mb-4 text-white focus:outline-none"
+          className="mb-4 text-AntiFlashWhite focus:outline-none"
         >
           {isSidebarOpen ? <FaArrowLeft size={20} /> : <FaBars size={20} />}
         </button>
         {isSidebarOpen && (
           <>
             <h2 className="mb-4 text-2xl font-bold">Sentirse Bien</h2>
+
             <hr className="my-4 border-t-2 border-gray-300" />
 
-            <h3 className="mb-2 text-xl font-semibold">Pagina Web:</h3>
             <ul>
               {navigationItems.map((item, index) => (
                 <li
                   key={index}
-                  className="p-2 mb-2 rounded cursor-pointer hover:bg-gray-700 hover:text-white"
+                  className="flex items-center p-2 mb-2 rounded cursor-pointer hover:bg-Verde hover:text-AntiFlashWhite"
                   onClick={() => navigate(item.path)}
                 >
-                  {item.name}
+                  {item.icon}
+                  <span className="ml-2">{item.name}</span>
                 </li>
               ))}
             </ul>
             <hr className="my-4 border-t-2 border-gray-300" />
             <button
               onClick={Logout}
-              className="w-full px-4 py-2 mt-4 text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none"
+              className="flex items-center w-full px-4 py-2 mt-4 rounded text-AntiFlashWhite bg-Verde hover:bg-green-600 focus:outline-none"
             >
+              <FaSignOutAlt className="mr-2" />
               Cerrar Sesión
             </button>
           </>
@@ -287,6 +310,12 @@ const Home: React.FC = () => {
                   <th className="px-4 py-2 text-sm font-semibold text-left text-gray-600 bg-gray-100 border-b-2 border-gray-200">
                     Estado
                   </th>
+                  {(usuario.type === "admin" ||
+                    usuario.type === "secretariat") && (
+                    <th className="px-4 py-2 text-sm font-semibold text-left text-gray-600 bg-gray-100 border-b-2 border-gray-200">
+                      Acción
+                    </th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -313,12 +342,25 @@ const Home: React.FC = () => {
                           ? "Pendiente"
                           : "Pagado"}
                       </td>
+                      {(usuario.type === "admin" ||
+                        usuario.type === "secretariat") && (
+                        <td className="px-4 py-2 text-sm border-b border-gray-200">
+                          <button
+                            onClick={() =>
+                              handleCheckClick(appointment.appointmentId)
+                            }
+                            className="text-green-500 hover:text-green-700 focus:outline-none"
+                          >
+                            <FaCheck />
+                          </button>
+                        </td>
+                      )}
                     </motion.tr>
                   ))
                 ) : (
                   <tr>
                     <td
-                      colSpan={4}
+                      colSpan={5}
                       className="px-4 py-2 text-sm text-center text-gray-600"
                     >
                       No hay información disponible
@@ -328,32 +370,43 @@ const Home: React.FC = () => {
               </tbody>
             </motion.table>
             <div className="flex items-center justify-between mt-4">
-              {currentPageToAttend > 1 && (
-                <button
-                  onClick={() =>
-                    handlePageChangeToAttend(currentPageToAttend - 1)
-                  }
-                  className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none"
-                >
-                  <FaChevronLeft />
-                </button>
-              )}
+              <button
+                onClick={() =>
+                  handlePageChangeToAttend(currentPageToAttend - 1)
+                }
+                className={`px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none ${
+                  currentPageToAttend === 1
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
+                disabled={currentPageToAttend === 1}
+              >
+                <FaChevronLeft />
+              </button>
               <span className="text-sm text-gray-600">
                 Página {currentPageToAttend}
               </span>
-              {indexOfLastItemToAttend <
-                appointments.filter(
-                  (appointment) => appointment.status === "pending"
-                ).length && (
-                <button
-                  onClick={() =>
-                    handlePageChangeToAttend(currentPageToAttend + 1)
-                  }
-                  className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none"
-                >
-                  <FaChevronRight />
-                </button>
-              )}
+              <button
+                onClick={() =>
+                  handlePageChangeToAttend(currentPageToAttend + 1)
+                }
+                className={`px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none ${
+                  indexOfLastItemToAttend >=
+                  appointments.filter(
+                    (appointment) => appointment.status === "pending"
+                  ).length
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
+                disabled={
+                  indexOfLastItemToAttend >=
+                  appointments.filter(
+                    (appointment) => appointment.status === "pending"
+                  ).length
+                }
+              >
+                <FaChevronRight />
+              </button>
             </div>
           </div>
 
@@ -422,32 +475,43 @@ const Home: React.FC = () => {
               </tbody>
             </motion.table>
             <div className="flex items-center justify-between mt-4">
-              {currentPageAttended > 1 && (
-                <button
-                  onClick={() =>
-                    handlePageChangeAttended(currentPageAttended - 1)
-                  }
-                  className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none"
-                >
-                  <FaChevronLeft />
-                </button>
-              )}
+              <button
+                onClick={() =>
+                  handlePageChangeAttended(currentPageAttended - 1)
+                }
+                className={`px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none ${
+                  currentPageAttended === 1
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
+                disabled={currentPageAttended === 1}
+              >
+                <FaChevronLeft />
+              </button>
               <span className="text-sm text-gray-600">
                 Página {currentPageAttended}
               </span>
-              {indexOfLastItemAttended <
-                appointments.filter(
-                  (appointment) => appointment.status === "completed"
-                ).length && (
-                <button
-                  onClick={() =>
-                    handlePageChangeAttended(currentPageAttended + 1)
-                  }
-                  className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none"
-                >
-                  <FaChevronRight />
-                </button>
-              )}
+              <button
+                onClick={() =>
+                  handlePageChangeAttended(currentPageAttended + 1)
+                }
+                className={`px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none ${
+                  indexOfLastItemAttended >=
+                  appointments.filter(
+                    (appointment) => appointment.status === "completed"
+                  ).length
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
+                disabled={
+                  indexOfLastItemAttended >=
+                  appointments.filter(
+                    (appointment) => appointment.status === "completed"
+                  ).length
+                }
+              >
+                <FaChevronRight />
+              </button>
             </div>
           </div>
         </div>
@@ -506,50 +570,55 @@ const Home: React.FC = () => {
           </>
         )}
 
-        {usuario.type === "admin" && (
+        {(usuario.type === "admin" || usuario.type === "secretariat") && (
           <>
-            <div className="p-6 mt-8 bg-gray-100 rounded-lg shadow-md">
-              <h3 className="mb-4 text-2xl font-semibold">
-                Opciones de administrador
-              </h3>
-              <div className="mt-4">
-                <label
-                  htmlFor="serviceSelect"
-                  className="block mb-2 text-sm font-medium text-gray-700"
-                >
-                  Seleccionar servicio para generar listado:
-                </label>
-                <select
-                  id="serviceSelect"
-                  value={selectedService}
-                  onChange={(e) => setSelectedService(e.target.value)}
-                  className="block w-1/2 px-2 py-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                >
-                  <option value="masajes">Tratamientos Corporales</option>
-                  <option value="faciales">Tratamientos Faciales</option>
-                </select>
-              </div>
-            </div>
-            <div className="flex mt-4 space-x-4">
-              <button
-                onClick={() => handleButtonClick("Reporte Semanal")}
-                className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none"
-              >
-                Descargar Reporte Semanal
-              </button>
-              <button
-                onClick={() => handleButtonClick("Reporte Mensual")}
-                className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none"
-              >
-                Descargar Reporte Mensual
-              </button>
-              <button
-                onClick={() => handleButtonClick("Reporte Anual")}
-                className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none"
-              >
-                Descargar Reporte Anual
-              </button>
-            </div>
+            {usuario.type === "admin" && (
+              <>
+                <div className="p-6 mt-8 bg-gray-100 rounded-lg shadow-md">
+                  <h3 className="mb-4 text-2xl font-semibold">
+                    Opciones de administrador
+                  </h3>
+                  <div className="mt-4">
+                    <label
+                      htmlFor="serviceSelect"
+                      className="block mb-2 text-sm font-medium text-gray-700"
+                    >
+                      Seleccionar servicio para generar listado:
+                    </label>
+                    <select
+                      id="serviceSelect"
+                      value={selectedService}
+                      onChange={(e) => setSelectedService(e.target.value)}
+                      className="block w-1/2 px-2 py-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    >
+                      <option value="masajes">Tratamientos Corporales</option>
+                      <option value="faciales">Tratamientos Faciales</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="flex mt-4 space-x-4">
+                  <button
+                    onClick={() => handleButtonClick("Reporte Semanal")}
+                    className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none"
+                  >
+                    Descargar Reporte Semanal
+                  </button>
+                  <button
+                    onClick={() => handleButtonClick("Reporte Mensual")}
+                    className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none"
+                  >
+                    Descargar Reporte Mensual
+                  </button>
+                  <button
+                    onClick={() => handleButtonClick("Reporte Anual")}
+                    className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none"
+                  >
+                    Descargar Reporte Anual
+                  </button>
+                </div>
+              </>
+            )}
+
             <div className="h-[20vh]">
               <div className="p-6 mt-8 mb-16 bg-gray-100 rounded-lg shadow-md">
                 <h3 className="mb-4 text-2xl font-semibold">
