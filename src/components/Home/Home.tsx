@@ -31,7 +31,7 @@ const navigationItems = [
   { name: "Inicio", path: "/", icon: <FaHome /> },
   { name: "Perfil", path: "/edit-profile", icon: <FaUser /> },
   { name: "Crear empleado", path: "/create-employee", icon: <FaUserPlus /> },
-  { name: "Servicios", path: "/services", icon: <FaConciergeBell /> },
+
   { name: "Sobre nosotros", path: "/about-us", icon: <FaInfoCircle /> },
   { name: "Contacto", path: "/contact", icon: <FaEnvelope /> },
   { name: "Noticias", path: "/notices", icon: <FaNewspaper /> },
