@@ -74,7 +74,7 @@ const Home: React.FC = () => {
         break;
     }
 
-    fetch(`http://localhost:3300/appointments/report`, {
+    fetch(`https://spa-api-psi.vercel.app/appointments/report`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -105,7 +105,7 @@ const Home: React.FC = () => {
   };
 
   const fetchIncomeReport = async () => {
-    fetch("http://localhost:3300/appointments/financial-report", {
+    fetch("https://spa-api-psi.vercel.app/appointments/financial-report", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
